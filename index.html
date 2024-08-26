@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site de Perguntas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #question-list {
+            margin-top: 20px;
+        }
+        .question {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Site de Perguntas e Respostas</h1>
+    <form id="question-form">
+        <input type="text" id="question-input" placeholder="Digite sua pergunta" required>
+        <button type="submit">Adicionar Pergunta</button>
+    </form>
+    <div id="question-list"></div>
+
+    <script>
+        const form = document.getElementById('question-form');
+        const questionInput = document.getElementById('question-input');
+        const questionList = document.getElementById('question-list');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const question = questionInput.value;
+            const div = document.createElement('div');
+            div.className = 'question';
+            div.textContent = question;
+
+            questionList.appendChild(div);
+
+            questionInput.value = '';
+        });
+    </script>
+</body>
+</html>
