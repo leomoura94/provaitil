@@ -32,6 +32,11 @@
             padding: 10px 20px;
             font-size: 16px;
         }
+        #final-message {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -40,7 +45,8 @@
         <div id="option-container"></div>
         <button id="next-question-button">Próxima Pergunta</button>
         <div class="result" id="result"></div>
-        <div class="score" id="score">Acertos: 0</div>
+        <div class="score" id="score">Acertos: 0 | Erros: 0</div>
+        <div id="final-message"></div>
     </div>
 
     <script>
@@ -69,11 +75,13 @@
 
         let currentQuestionIndex = 0;
         let correctAnswersCount = 0;
+        let incorrectAnswersCount = 0;
 
         const questionContainer = document.getElementById('question-container');
         const optionContainer = document.getElementById('option-container');
         const resultContainer = document.getElementById('result');
         const scoreContainer = document.getElementById('score');
+        const finalMessageContainer = document.getElementById('final-message');
         const nextQuestionButton = document.getElementById('next-question-button');
 
         function shuffle(array) {
@@ -86,6 +94,7 @@
         function loadQuestion() {
             resultContainer.textContent = "";
             optionContainer.innerHTML = "";
+            finalMessageContainer.textContent = "";
 
             const currentQuestion = questions[currentQuestionIndex];
             questionContainer.textContent = currentQuestion.question;
@@ -118,11 +127,22 @@
                 } else {
                     resultContainer.textContent = "Incorreto! A resposta correta é: " + questions[currentQuestionIndex].correctAnswer;
                     resultContainer.style.color = "red";
+                    incorrectAnswersCount++;
                 }
-                scoreContainer.textContent = `Acertos: ${correctAnswersCount}`;
+                scoreContainer.textContent = `Acertos: ${correctAnswersCount} | Erros: ${incorrectAnswersCount}`;
             } else {
                 resultContainer.textContent = "Por favor, selecione uma opção.";
                 resultContainer.style.color = "orange";
+            }
+        }
+
+        function displayFinalMessage() {
+            if (correctAnswersCount >= 1) {
+                finalMessageContainer.textContent = "VOCÊ FOI APROVADO IDIOTA! PARABÉNS!";
+                finalMessageContainer.style.color = "green";
+            } else {
+                finalMessageContainer.textContent = "VOCÊ FOI REPROVADO HAHAHA!";
+                finalMessageContainer.style.color = "red";
             }
         }
 
@@ -130,14 +150,17 @@
             checkAnswer();
             currentQuestionIndex++;
             if (currentQuestionIndex >= questions.length) {
+                displayFinalMessage();
                 currentQuestionIndex = 0;
-                alert("Você completou o quiz! Reiniciando...");
+                correctAnswersCount = 0;
+                incorrectAnswersCount = 0;
+                nextQuestionButton.textContent = "Reiniciar Quiz";
+            } else {
+                loadQuestion();
             }
-            loadQuestion();
         });
 
         loadQuestion();  // Carrega a primeira pergunta
     </script>
 </body>
 </html>
-
