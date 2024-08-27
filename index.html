@@ -3,39 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz de Perguntas</title>
+    <title>Quiz de TI</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            background: url('url-da-imagem-azul.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            margin: 0;
+            padding: 0;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            height: 100vh;
         }
         #quiz-container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 8px;
             max-width: 600px;
             width: 100%;
+            text-align: center;
         }
-        .question {
-            margin: 20px 0;
-            font-weight: bold;
+        #question-container {
+            font-size: 1.2em;
+            margin-bottom: 20px;
         }
         .option {
+            display: block;
+            background: #333;
+            border: none;
+            color: #fff;
+            padding: 15px;
             margin: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
         }
-        .result, .score {
-            margin-top: 20px;
-            font-weight: bold;
+        .option:hover {
+            background: #555;
         }
-        button {
+        .option.correct {
+            background: #28a745;
+        }
+        .option.incorrect {
+            background: #dc3545;
+        }
+        #score, #final-message {
             margin-top: 20px;
+            font-size: 1.2em;
+        }
+        #restart-button, #next-question-button {
+            background: #007bff;
+            border: none;
+            color: #fff;
             padding: 10px 20px;
-            font-size: 16px;
-        }
-        #final-message {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px;
         }
         #restart-button {
             display: none;
@@ -44,195 +70,25 @@
 </head>
 <body>
     <div id="quiz-container">
-        <div id="question-container"></div>
-        <div id="option-container"></div>
+        <div id="question-container">Pergunta será exibida aqui</div>
+        <div id="option-container">
+            <!-- Opções serão adicionadas aqui -->
+        </div>
+        <div id="score">Acertos: 0 | Erros: 0</div>
+        <div id="final-message"></div>
         <button id="next-question-button">Próxima Pergunta</button>
         <button id="restart-button">Reiniciar Quiz</button>
-        <div class="result" id="result"></div>
-        <div class="score" id="score">Acertos: 0 | Erros: 0</div>
-        <div id="final-message"></div>
     </div>
 
     <script>
         let questions = [
             {
-                question: "Qual dos itens abaixo concede ao usuário acesso a um sistema?",
-                options: [
-                    "Requisição de serviço",
-                    "Acordo de serviço",
-                    "Consumo de serviço",
-                    "Provisão de serviço"
-                ],
-                correctAnswer: "Provisão de serviço"
-            },
-            {
-                question: "Qual princípio se concentra nos consumidores de serviço?",
-                options: [
-                    "Começar de onde você está",
-                    "Otimizar e automatizar",
-                    "Manter de forma simples",
-                    "Foco no valor"
-                ],
-                correctAnswer: "Foco no valor"
-            },
-            {
-                question: "Como os sete princípios orientadores devem ser combinados quando uma organização precisa tomar uma decisão?",
-                options: [
-                    "Aplicar todos os princípios orientadores igualmente ao tomar qualquer decisão",
-                    "Aplicar um ou dois princípios orientadores mais relevantes à decisão específica",
-                    "Aplicar o princípio “Foco no Valor” e mais um ou dois mais relevantes à decisão específica",
-                    "Revisar cada princípio orientador para decidir a relevância em relação à decisão específica"
-                ],
-                correctAnswer: "Revisar cada princípio orientador para decidir a relevância em relação à decisão específica"
-            },
-            {
-                question: "Que princípio orientador ITIL recomenda o uso de serviços, processos e ferramentas existentes para melhorar o serviço?",
-                options: [
-                    "Progredir Iterativamente com feedback",
-                    "Manter de forma simples e prática",
-                    "Começar de onde você está",
-                    "Foco no valor"
-                ],
-                correctAnswer: "Começar de onde você está"
-            },
-            {
-                question: "Qual é o principal uso de um calendário de mudanças?",
-                options: [
-                    "Ajudar a planejar, autorizar e programar mudanças emergenciais",
-                    "Publicar uma lista de requisições de serviço que os usuários podem selecionar",
-                    "Garantir que uma única autoridade de mudança revise todas as mudanças",
-                    "Ajudar a planejar mudanças, auxiliar na comunicação e evitar conflitos"
-                ],
-                correctAnswer: "Ajudar a planejar mudanças, auxiliar na comunicação e evitar conflitos"
-            },
-            // Novas perguntas adicionadas
-            {
-                question: "Quais partes interessadas colaboram na criação de valor em um relacionamento de serviço?",
-                options: [
-                    "Investidor e fornecedor",
-                    "Consumidor e provedor",
-                    "Provedor e fornecedor",
-                    "Investidor e consumidor"
-                ],
-                correctAnswer: "Consumidor e provedor"
-            },
-            {
-                question: "O que pode ajudar a diminuir a resistência a uma melhoria planejada na aplicação do princípio orientador colaborar e promover visibilidade?",
-                options: [
-                    "Restringir as informações sobre a melhoria somente às partes interessadas essenciais",
-                    "Aumentar a colaboração e a visibilidade da melhoria",
-                    "Envolver os clientes após o término de todo o planejamento",
-                    "Envolver cada grupo de partes interessadas igualmente com a mesma comunicação"
-                ],
-                correctAnswer: "Aumentar a colaboração e a visibilidade da melhoria"
-            },
-            {
-                question: "O que é utilidade?",
-                options: [
-                    "Funcionalidade oferecida por um serviço para atender a uma necessidade específica",
-                    "Confirmação de que um serviço atenderá aos requisitos acordados",
-                    "Quantia em dinheiro gasta em uma determinada atividade ou recurso",
-                    "Benefícios, utilidade e importância percebidos em algo"
-                ],
-                correctAnswer: "Funcionalidade oferecida por um serviço para atender a uma necessidade específica"
-            },
-            {
-                question: "Qual dessas atividades realizadas como parte do gerenciamento de problemas?",
-                options: [
-                    "Criação de registro de incidente",
-                    "Diagnóstico e solução de incidentes",
-                    "Escalada de incidentes para a resolução por uma equipe de suporte",
-                    "Análise de tendência dos registros de incidente"
-                ],
-                correctAnswer: "Análise de tendência dos registros de incidente"
-            },
-            {
-                question: "O que ajuda a diagnosticar e resolver um incidente simples?",
-                options: [
-                    "Escalada rápida",
-                    "Formação de uma equipe temporária",
-                    "Uso de roteiros",
-                    "Priorização dos problemas"
-                ],
-                correctAnswer: "Uso de roteiros"
-            },
-            {
-                question: "Qual das opções a seguir abrange governança, práticas de gerenciamento e melhoria contínua?",
-                options: [
-                    "O sistema de valor de serviço",
-                    "A atividade de cadeia de valor de entrega e suporte",
-                    "O princípio orientador foco no valor",
-                    "A dimensão fluxo de valor e processos"
-                ],
-                correctAnswer: "O sistema de valor de serviço"
-            },
-            {
-                question: "Que prática envolve o gerenciamento de vulnerabilidades que foram analisadas mas não resolvidas?",
-                options: [
-                    "Habilitação de mudança",
-                    "Gerenciamento de requisição de serviço",
-                    "Gerenciamento de problema",
-                    "Gerenciamento de nível de serviço"
-                ],
-                correctAnswer: "Gerenciamento de problema"
-            },
-            {
-                question: "O propósito da prática de gerenciamento de fornecedor é garantir que os fornecedores da organização e o ______ deles sejam gerenciados adequadamente para oferecer suporte a produtos e serviços de qualidade contínua.",
-                options: [
-                    "Custo",
-                    "Usuário",
-                    "Valor",
-                    "Desempenho"
-                ],
-                correctAnswer: "Desempenho"
-            },
-            {
-                question: "Qual das opções a seguir deve ser considerada parte da dimensão parceiros e fornecedores?",
-                options: [
-                    "O nível de integração e de informalidade envolvido nos relacionamentos entre as organizações",
-                    "As atividades, fluxo de trabalho, controles e procedimentos necessários para atingir os objetivos acordados",
-                    "As informações criadas, gerenciadas e usadas durante a provisão e o consumo de serviço",
-                    "As qualificações e competências requeridas das equipes e dos membros individuais da organização"
-                ],
-                correctAnswer: "O nível de integração e de informalidade envolvido nos relacionamentos entre as organizações"
-            },
-            {
-                question: "Um usuário é ______ quem usa os serviços",
-                options: [
-                    "Uma organização",
-                    "Um papel",
-                    "Uma equipe",
-                    "Um fornecedor"
-                ],
-                correctAnswer: "Um papel"
-            },
-            {
-                question: "Qual das atividades a seguir é realizada durante a etapa 'chegamos lá?' do modelo de melhoria contínua?",
-                options: [
-                    "Definição de metas mensuráveis",
-                    "Realização de avaliações de linhas de base",
-                    "Execução de ações de melhoria",
-                    "Avaliação de medições e métricas"
-                ],
-                correctAnswer: "Avaliação de medições e métricas"
-            },
-            {
-                question: "Qual das atividades a seguir faz parte da prática de melhoria contínua?",
-                options: [
-                    "Identificação e registro de oportunidades",
-                    "Engajamento tático e operacional com os clientes",
-                    "Preenchimento e manutenção do registro de ativo",
-                    "Fornecimento de um caminho claro para os usuários relatarem questões, fazerem consultas e enviarem requisições"
-                ],
-                correctAnswer: "Identificação e registro de oportunidades"
-            },
-            {
-                question: "Qual é o propósito da prática gerenciamento de incidente?",
+                question: "Qual é o objetivo principal da prática de gerenciamento de incidentes?",
                 options: [
                     "Minimizar o impacto negativo de incidentes restaurando a operação normal do serviço o mais rápido possível",
-                    "Capturar a demanda de resolução de incidentes e requisições de serviço",
-                    "Reduzir a probabilidade e o impacto de incidentes ao identificar suas causas reais e potenciais",
-                    "Suportar a qualidade acordada do serviço por meio do tratamento de todas as requisições de serviço"
+                    "Reduzir os custos associados a incidentes",
+                    "Melhorar a satisfação do cliente após um incidente",
+                    "Prevenir a ocorrência de incidentes futuros"
                 ],
                 correctAnswer: "Minimizar o impacto negativo de incidentes restaurando a operação normal do serviço o mais rápido possível"
             },
@@ -377,115 +233,300 @@
                 correctAnswer: "Gerenciamento de qualidade"
             },
             {
-                question: "Qual é o propósito da prática de gerenciamento de ativos de TI?",
+                question: "Qual é a função principal da prática de gerenciamento de configuração?",
                 options: [
-                    "Gerenciar e controlar o ciclo de vida dos ativos de TI",
-                    "Garantir que os serviços de TI sejam entregues conforme os acordos estabelecidos",
-                    "Identificar e resolver problemas relacionados aos ativos de TI",
-                    "Gerenciar a demanda e a capacidade dos serviços de TI"
+                    "Garantir que todos os ativos de TI estejam registrados e avaliados corretamente",
+                    "Controlar e gerenciar as mudanças no ambiente de TI",
+                    "Gerenciar a capacidade e o desempenho dos serviços",
+                    "Estabelecer e manter acordos de nível de serviço com clientes"
                 ],
-                correctAnswer: "Gerenciar e controlar o ciclo de vida dos ativos de TI"
+                correctAnswer: "Garantir que todos os ativos de TI estejam registrados e avaliados corretamente"
             },
             {
-                question: "Qual é o objetivo da prática de gerenciamento de mudanças?",
+                question: "Qual é o objetivo da prática de gerenciamento de mudança?",
                 options: [
-                    "Garantir que todas as mudanças sejam implementadas de forma controlada e sem impacto negativo nos serviços",
-                    "Gerenciar o desempenho e a capacidade dos serviços de TI",
-                    "Garantir que todos os incidentes sejam resolvidos rapidamente",
-                    "Gerenciar a comunicação com os clientes sobre mudanças nos serviços"
+                    "Garantir que todas as mudanças sejam realizadas de forma controlada e com o menor impacto possível",
+                    "Identificar e resolver problemas relacionados ao ambiente de TI",
+                    "Gerenciar e monitorar a performance dos serviços de TI",
+                    "Garantir que todos os serviços de TI sejam entregues conforme acordado"
                 ],
-                correctAnswer: "Garantir que todas as mudanças sejam implementadas de forma controlada e sem impacto negativo nos serviços"
+                correctAnswer: "Garantir que todas as mudanças sejam realizadas de forma controlada e com o menor impacto possível"
             },
             {
-                question: "Qual das opções a seguir descreve melhor o papel de um gestor de serviços?",
+                question: "Qual é o principal benefício da prática de gerenciamento de problemas?",
                 options: [
-                    "Gerenciar a implementação de novos serviços e garantir que sejam entregues conforme os requisitos",
-                    "Supervisionar a operação diária dos serviços e garantir que atendam aos acordos de nível de serviço",
-                    "Fornecer suporte técnico para resolver problemas relacionados aos serviços",
-                    "Desenvolver e manter a documentação de processos e procedimentos de TI"
+                    "Identificar e eliminar as causas raízes dos incidentes para prevenir recorrências",
+                    "Ajudar os usuários a resolver problemas rapidamente",
+                    "Gerenciar a capacidade e o desempenho dos serviços de TI",
+                    "Garantir que todos os serviços sejam entregues conforme acordado"
                 ],
-                correctAnswer: "Supervisionar a operação diária dos serviços e garantir que atendam aos acordos de nível de serviço"
+                correctAnswer: "Identificar e eliminar as causas raízes dos incidentes para prevenir recorrências"
+            },
+            {
+                question: "Qual prática de gerenciamento tem o objetivo de garantir que as alterações no ambiente de TI sejam feitas de forma segura e controlada?",
+                options: [
+                    "Gerenciamento de mudanças",
+                    "Gerenciamento de liberação",
+                    "Gerenciamento de capacidade",
+                    "Gerenciamento de segurança"
+                ],
+                correctAnswer: "Gerenciamento de mudanças"
+            },
+            {
+                question: "Qual prática é responsável por garantir que as necessidades de todos os stakeholders sejam consideradas no desenvolvimento de novos serviços?",
+                options: [
+                    "Gerenciamento de demanda",
+                    "Gerenciamento de portfólio",
+                    "Gerenciamento de fornecimento",
+                    "Gerenciamento de requisitos"
+                ],
+                correctAnswer: "Gerenciamento de requisitos"
+            },
+            {
+                question: "Qual é o objetivo principal da prática de gerenciamento de catálogo de serviços?",
+                options: [
+                    "Fornecer uma visão abrangente de todos os serviços disponíveis e seus detalhes",
+                    "Gerenciar a implementação de novos serviços",
+                    "Garantir a continuidade dos serviços em caso de falhas",
+                    "Monitorar o desempenho e a capacidade dos serviços"
+                ],
+                correctAnswer: "Fornecer uma visão abrangente de todos os serviços disponíveis e seus detalhes"
+            },
+            {
+                question: "Qual é o principal propósito da prática de gerenciamento de capacidade?",
+                options: [
+                    "Garantir que a capacidade dos serviços de TI seja suficiente para atender à demanda atual e futura",
+                    "Gerenciar a segurança das informações e dos ativos de TI",
+                    "Controlar e monitorar o desempenho dos serviços de TI",
+                    "Gerenciar as mudanças no ambiente de TI"
+                ],
+                correctAnswer: "Garantir que a capacidade dos serviços de TI seja suficiente para atender à demanda atual e futura"
+            },
+            {
+                question: "Qual é o objetivo da prática de gerenciamento de liberação e implantação?",
+                options: [
+                    "Garantir que os novos serviços e mudanças sejam implementados de forma eficaz e com o menor impacto possível",
+                    "Gerenciar a segurança e integridade dos serviços de TI",
+                    "Controlar a capacidade e o desempenho dos serviços de TI",
+                    "Ajudar os usuários a resolver problemas e incidentes"
+                ],
+                correctAnswer: "Garantir que os novos serviços e mudanças sejam implementados de forma eficaz e com o menor impacto possível"
+            },
+            {
+                question: "Qual prática de gerenciamento tem o objetivo de avaliar e melhorar continuamente a qualidade dos serviços de TI?",
+                options: [
+                    "Melhoria contínua de serviço",
+                    "Gerenciamento de mudanças",
+                    "Gerenciamento de problemas",
+                    "Gerenciamento de fornecimento"
+                ],
+                correctAnswer: "Melhoria contínua de serviço"
+            },
+            {
+                question: "Qual é o objetivo da prática de gerenciamento de conhecimento?",
+                options: [
+                    "Facilitar o compartilhamento e a utilização do conhecimento para melhorar a tomada de decisões e a resolução de problemas",
+                    "Garantir que os serviços de TI sejam entregues conforme acordado",
+                    "Gerenciar a capacidade e o desempenho dos serviços de TI",
+                    "Controlar e monitorar os custos operacionais dos serviços"
+                ],
+                correctAnswer: "Facilitar o compartilhamento e a utilização do conhecimento para melhorar a tomada de decisões e a resolução de problemas"
+            },
+            {
+                question: "Qual prática de gerenciamento visa garantir que todos os incidentes sejam resolvidos de forma eficaz e eficiente?",
+                options: [
+                    "Gerenciamento de incidentes",
+                    "Gerenciamento de problemas",
+                    "Gerenciamento de mudanças",
+                    "Gerenciamento de configuração"
+                ],
+                correctAnswer: "Gerenciamento de incidentes"
+            },
+            {
+                question: "Qual é o principal objetivo da prática de gerenciamento de fornecimento e contratos?",
+                options: [
+                    "Gerenciar as relações com fornecedores e garantir que os serviços sejam entregues conforme os contratos",
+                    "Garantir que os novos serviços e mudanças sejam implementados de forma eficaz",
+                    "Gerenciar a segurança e a integridade dos serviços de TI",
+                    "Ajudar a identificar e resolver problemas relacionados aos serviços de TI"
+                ],
+                correctAnswer: "Gerenciar as relações com fornecedores e garantir que os serviços sejam entregues conforme os contratos"
+            },
+            {
+                question: "Qual é o propósito da prática de gerenciamento de demanda?",
+                options: [
+                    "Garantir que a capacidade dos serviços de TI atenda à demanda atual e futura",
+                    "Gerenciar a entrega de serviços de TI conforme acordado",
+                    "Monitorar o desempenho e a capacidade dos serviços",
+                    "Identificar e resolver problemas relacionados aos serviços de TI"
+                ],
+                correctAnswer: "Garantir que a capacidade dos serviços de TI atenda à demanda atual e futura"
+            },
+            {
+                question: "Qual é o objetivo principal da prática de gerenciamento de segurança da informação?",
+                options: [
+                    "Garantir a integridade e a confidencialidade das informações",
+                    "Gerenciar a capacidade e o desempenho dos serviços de TI",
+                    "Fornecer suporte técnico aos usuários finais",
+                    "Controlar os custos e os orçamentos dos serviços de TI"
+                ],
+                correctAnswer: "Garantir a integridade e a confidencialidade das informações"
+            },
+            {
+                question: "Qual é o principal propósito da prática de gerenciamento de continuidade de serviço?",
+                options: [
+                    "Garantir que o serviço esteja disponível em todos os momentos, mesmo durante eventos críticos",
+                    "Gerenciar a implementação de novos serviços",
+                    "Monitorar o desempenho e a capacidade dos serviços de TI",
+                    "Gerenciar e resolver incidentes relacionados à continuidade do serviço"
+                ],
+                correctAnswer: "Garantir que o serviço esteja disponível em todos os momentos, mesmo durante eventos críticos"
+            },
+            {
+                question: "Qual prática de gerenciamento é responsável por garantir que todos os ativos de TI sejam adequadamente registrados e avaliados?",
+                options: [
+                    "Gerenciamento de configuração",
+                    "Gerenciamento de manutenção",
+                    "Gerenciamento de liberação",
+                    "Gerenciamento de problemas"
+                ],
+                correctAnswer: "Gerenciamento de configuração"
+            },
+            {
+                question: "Qual é o propósito da prática de gerenciamento de serviços de TI?",
+                options: [
+                    "Garantir que todos os serviços de TI sejam entregues conforme acordado e atendam às expectativas dos stakeholders",
+                    "Gerenciar a segurança e integridade dos serviços de TI",
+                    "Gerenciar a capacidade e o desempenho dos serviços de TI",
+                    "Controlar e monitorar os custos operacionais dos serviços"
+                ],
+                correctAnswer: "Garantir que todos os serviços de TI sejam entregues conforme acordado e atendam às expectativas dos stakeholders"
+            },
+            {
+                question: "Qual prática de gerenciamento visa melhorar continuamente os serviços de TI e a eficácia das operações?",
+                options: [
+                    "Melhoria contínua de serviço",
+                    "Gerenciamento de mudanças",
+                    "Gerenciamento de problemas",
+                    "Gerenciamento de fornecimento"
+                ],
+                correctAnswer: "Melhoria contínua de serviço"
+            },
+            {
+                question: "Qual é o objetivo da prática de gerenciamento de portfólio de serviços?",
+                options: [
+                    "Gerenciar e controlar todos os serviços e ativos de TI para garantir que estejam alinhados com os objetivos de negócios",
+                    "Garantir a continuidade dos serviços em caso de falhas",
+                    "Gerenciar a capacidade e o desempenho dos serviços",
+                    "Controlar e monitorar os custos operacionais dos serviços de TI"
+                ],
+                correctAnswer: "Gerenciar e controlar todos os serviços e ativos de TI para garantir que estejam alinhados com os objetivos de negócios"
+            },
+            {
+                question: "Qual é o objetivo principal da prática de gerenciamento de incidentes?",
+                options: [
+                    "Minimizar o impacto negativo de incidentes restaurando a operação normal do serviço o mais rápido possível",
+                    "Gerenciar e resolver problemas complexos",
+                    "Garantir que os serviços sejam entregues conforme acordado",
+                    "Controlar e monitorar o desempenho dos serviços de TI"
+                ],
+                correctAnswer: "Minimizar o impacto negativo de incidentes restaurando a operação normal do serviço o mais rápido possível"
+            },
+            {
+                question: "Qual prática de gerenciamento é responsável por garantir que as mudanças sejam feitas de forma controlada e com o menor impacto possível?",
+                options: [
+                    "Gerenciamento de mudanças",
+                    "Gerenciamento de liberação",
+                    "Gerenciamento de capacidade",
+                    "Gerenciamento de segurança"
+                ],
+                correctAnswer: "Gerenciamento de mudanças"
             }
         ];
 
         let currentQuestionIndex = 0;
         let score = 0;
-        let totalQuestions = questions.length;
+        let incorrectAnswers = 0;
 
         function showQuestion() {
-            let questionContainer = document.getElementById('question-container');
-            let optionContainer = document.getElementById('option-container');
-            let question = questions[currentQuestionIndex];
-
-            questionContainer.textContent = question.question;
-            optionContainer.innerHTML = '';
+            const question = questions[currentQuestionIndex];
+            document.getElementById('question-container').textContent = question.question;
+            const optionsContainer = document.getElementById('option-container');
+            optionsContainer.innerHTML = '';
 
             question.options.forEach(option => {
-                let button = document.createElement('button');
-                button.textContent = option;
+                const button = document.createElement('button');
                 button.classList.add('option');
-                button.addEventListener('click', () => selectOption(option));
-                optionContainer.appendChild(button);
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option);
+                optionsContainer.appendChild(button);
             });
-        }
 
-        function selectOption(selectedOption) {
-            let correctAnswer = questions[currentQuestionIndex].correctAnswer;
-
-            if (selectedOption === correctAnswer) {
-                score++;
-            }
-
-            document.getElementById('score').textContent = `Acertos: ${score} | Erros: ${totalQuestions - score}`;
-            currentQuestionIndex++;
-
-            if (currentQuestionIndex < totalQuestions) {
-                showQuestion();
-            } else {
-                showFinalMessage();
-            }
-        }
-
-        function showFinalMessage() {
-            let finalMessage = document.getElementById('final-message');
-            let result = document.getElementById('result');
-            let restartButton = document.getElementById('restart-button');
-
-            if (score >= 26) {
-                finalMessage.textContent = 'VOCÊ FOI APROVADO';
-            } else {
-                finalMessage.textContent = 'VOCÊ FOI REPROVADO';
-            }
-
-            result.textContent = `Você acertou ${score} de ${totalQuestions} perguntas.`;
-            restartButton.style.display = 'block';
+            document.getElementById('final-message').textContent = '';
             document.getElementById('next-question-button').style.display = 'none';
+            document.getElementById('restart-button').style.display = 'none';
+        }
+
+        function checkAnswer(selectedOption) {
+            const question = questions[currentQuestionIndex];
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.disabled = true;
+                if (option.textContent === question.correctAnswer) {
+                    option.classList.add('correct');
+                } else if (option.textContent === selectedOption) {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            if (selectedOption === question.correctAnswer) {
+                score++;
+            } else {
+                incorrectAnswers++;
+                document.getElementById('final-message').textContent = `Resposta correta: ${question.correctAnswer}`;
+            }
+
+            updateScore();
+            document.getElementById('next-question-button').style.display = 'block';
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = `Acertos: ${score} | Erros: ${incorrectAnswers}`;
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex >= questions.length) {
+                document.getElementById('final-message').textContent = score >= 26 ? 'VOCÊ FOI APROVADO' : 'VOCÊ FOI REPROVADO';
+                document.getElementById('restart-button').style.display = 'block';
+                document.getElementById('next-question-button').style.display = 'none';
+            } else {
+                showQuestion();
+            }
         }
 
         function restartQuiz() {
             currentQuestionIndex = 0;
             score = 0;
+            incorrectAnswers = 0;
             questions = shuffleArray(questions);
             showQuestion();
-            document.getElementById('next-question-button').style.display = 'block';
             document.getElementById('restart-button').style.display = 'none';
-            document.getElementById('final-message').textContent = '';
-            document.getElementById('score').textContent = 'Acertos: 0 | Erros: 0';
         }
 
         function shuffleArray(array) {
-            let shuffledArray = array.slice();
-            for (let i = shuffledArray.length - 1; i > 0; i--) {
+            for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+                [array[i], array[j]] = [array[j], array[i]];
             }
-            return shuffledArray;
+            return array;
         }
 
-        document.getElementById('next-question-button').addEventListener('click', showQuestion);
-        document.getElementById('restart-button').addEventListener('click', restartQuiz);
+        document.getElementById('next-question-button').onclick = nextQuestion;
+        document.getElementById('restart-button').onclick = restartQuiz;
 
         showQuestion();
     </script>
 </body>
 </html>
+
