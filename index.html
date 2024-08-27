@@ -23,7 +23,7 @@
         .option {
             margin: 10px 0;
         }
-        .result {
+        .result, .score {
             margin-top: 20px;
             font-weight: bold;
         }
@@ -40,6 +40,7 @@
         <div id="option-container"></div>
         <button id="next-question-button">Próxima Pergunta</button>
         <div class="result" id="result"></div>
+        <div class="score" id="score">Acertos: 0</div>
     </div>
 
     <script>
@@ -67,10 +68,12 @@
         ];
 
         let currentQuestionIndex = 0;
+        let correctAnswersCount = 0;
 
         const questionContainer = document.getElementById('question-container');
         const optionContainer = document.getElementById('option-container');
         const resultContainer = document.getElementById('result');
+        const scoreContainer = document.getElementById('score');
         const nextQuestionButton = document.getElementById('next-question-button');
 
         function shuffle(array) {
@@ -111,10 +114,12 @@
                 if (answer === questions[currentQuestionIndex].correctAnswer) {
                     resultContainer.textContent = "Correto!";
                     resultContainer.style.color = "green";
+                    correctAnswersCount++;
                 } else {
                     resultContainer.textContent = "Incorreto! A resposta correta é: " + questions[currentQuestionIndex].correctAnswer;
                     resultContainer.style.color = "red";
                 }
+                scoreContainer.textContent = `Acertos: ${correctAnswersCount}`;
             } else {
                 resultContainer.textContent = "Por favor, selecione uma opção.";
                 resultContainer.style.color = "orange";
@@ -126,6 +131,7 @@
             currentQuestionIndex++;
             if (currentQuestionIndex >= questions.length) {
                 currentQuestionIndex = 0;
+                alert("Você completou o quiz! Reiniciando...");
             }
             loadQuestion();
         });
@@ -134,3 +140,4 @@
     </script>
 </body>
 </html>
+
