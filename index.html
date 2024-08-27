@@ -103,18 +103,6 @@
                 correctAnswer: "Satisfação do cliente"
             },
             {
-                question: "Como os sete principios orientadores devem ser combinados quando uma organização 
-precisa tomar uma decisão? 
-",
-                options: [
-                    "Aplicar todos os princípios orientadores igualmente ao tomar qualquer decisão",
-                    "Aplicar um ou dois princípios orientadores mais relevantes à decisão específica",
-                    "Aplicar o princípio “Foco no Valor” e mais um ou dois mais relevantes à decisão específica",
-                    "Revisar cada princípio orientador para decidir a relevância em relação à decisão específica."
-                ],
-                correctAnswer: "Revisar cada princípio orientador para decidir a relevância em relação à decisão específica"
-            },
-            {
                 question: "Qual é o objetivo da prática de gerenciamento de continuidade de serviço?",
                 options: [
                     "Garantir que as operações de TI sejam restauradas o mais rápido possível após uma interrupção",
@@ -495,7 +483,7 @@ precisa tomar uma decisão?
                 score++;
             } else {
                 incorrectAnswers++;
-                document.getElementById('final-message').textContent = Resposta correta: ${question.correctAnswer};
+                document.getElementById('final-message').textContent = `Resposta correta: ${question.correctAnswer}`;
             }
 
             updateScore();
@@ -503,7 +491,7 @@ precisa tomar uma decisão?
         }
 
         function updateScore() {
-            document.getElementById('score').textContent = Acertos: ${score} | Erros: ${incorrectAnswers};
+            document.getElementById('score').textContent = `Acertos: ${score} | Erros: ${incorrectAnswers}`;
         }
 
         function nextQuestion() {
