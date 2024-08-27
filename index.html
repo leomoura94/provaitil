@@ -37,6 +37,9 @@
             font-size: 18px;
             font-weight: bold;
         }
+        #restart-button {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -44,13 +47,14 @@
         <div id="question-container"></div>
         <div id="option-container"></div>
         <button id="next-question-button">Próxima Pergunta</button>
+        <button id="restart-button">Reiniciar Quiz</button>
         <div class="result" id="result"></div>
         <div class="score" id="score">Acertos: 0 | Erros: 0</div>
         <div id="final-message"></div>
     </div>
 
     <script>
-        const questions = [
+        let questions = [
             {
                 question: "Qual dos itens abaixo concede ao usuário acesso a um sistema?",
                 options: [
@@ -83,6 +87,7 @@
         const scoreContainer = document.getElementById('score');
         const finalMessageContainer = document.getElementById('final-message');
         const nextQuestionButton = document.getElementById('next-question-button');
+        const restartButton = document.getElementById('restart-button');
 
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -138,12 +143,13 @@
 
         function displayFinalMessage() {
             if (correctAnswersCount >= 1) {
-                finalMessageContainer.textContent = "VOCÊ FOI APROVADO IDIOTA! PARABÉNS!";
+                finalMessageContainer.textContent = "VOCÊ FOI APROVADO, PARABÉNS!";
                 finalMessageContainer.style.color = "green";
             } else {
-                finalMessageContainer.textContent = "VOCÊ FOI REPROVADO HAHAHA!";
+                finalMessageContainer.textContent = "VOCÊ FOI REPROVADO!";
                 finalMessageContainer.style.color = "red";
             }
+            restartButton.style.display = "block";
         }
 
         nextQuestionButton.addEventListener('click', function() {
@@ -151,13 +157,21 @@
             currentQuestionIndex++;
             if (currentQuestionIndex >= questions.length) {
                 displayFinalMessage();
-                currentQuestionIndex = 0;
-                correctAnswersCount = 0;
-                incorrectAnswersCount = 0;
-                nextQuestionButton.textContent = "Reiniciar Quiz";
+                nextQuestionButton.style.display = "none";
             } else {
                 loadQuestion();
             }
+        });
+
+        restartButton.addEventListener('click', function() {
+            correctAnswersCount = 0;
+            incorrectAnswersCount = 0;
+            currentQuestionIndex = 0;
+            shuffle(questions);
+            loadQuestion();
+            scoreContainer.textContent = "Acertos: 0 | Erros: 0";
+            restartButton.style.display = "none";
+            nextQuestionButton.style.display = "block";
         });
 
         loadQuestion();  // Carrega a primeira pergunta
