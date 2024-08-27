@@ -3,46 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site de Perguntas</title>
+    <title>Quiz de Perguntas</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        #question-list {
-            margin-top: 20px;
+        #quiz-container {
+            max-width: 600px;
+            width: 100%;
         }
         .question {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .option {
+            margin: 10px 0;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-    <h1>Site de Perguntas e Respostas</h1>
-    <form id="question-form">
-        <input type="text" id="question-input" placeholder="Digite sua pergunta" required>
-        <button type="submit">Adicionar Pergunta</button>
-    </form>
-    <div id="question-list"></div>
+    <div id="quiz-container">
+        <div id="question-container"></div>
+        <div id="option-container"></div>
+        <button id="next-question-button">Próxima Pergunta</button>
+        <div class="result" id="result"></div>
+    </div>
 
     <script>
-        const form = document.getElementById('question-form');
-        const questionInput = document.getElementById('question-input');
-        const questionList = document.getElementById('question-list');
+        const questions = [
+            {
+                question: "Qual dos itens abaixo concede ao usuário acesso a um sistema?",
+                options: [
+                    "Requisição de serviço",
+                    "Acordo de serviço",
+                    "Consumo de serviço",
+                    "Provisão de serviço"
+                ],
+                correctAnswer: "Provisão de serviço"
+            },
+            {
+                question: "Qual princípio se concentra nos consumidores de serviço?",
+                options: [
+                    "Começar de onde você está",
+                    "Otimizar e automatizar",
+                    "Manter de forma simples",
+                    "Foco no valor"
+                ],
+                correctAnswer: "Foco no valor"
+            }
+        ];
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
+        let currentQuestionIndex = 0;
 
-            const question = questionInput.value;
-            const div = document.createElement('div');
-            div.className = 'question';
-            div.textContent = question;
+        const questionContainer = document.getElementById('question-container');
+        const optionContainer = document.getElementById('option-container');
+        const resultContainer = document.getElementById('result');
+        const nextQuestionButton = document.getElementById('next-question-button');
 
-            questionList.appendChild(div);
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
 
-            questionInput.value = '';
+        function loadQuestion() {
+            resultContainer.textContent = "";
+            optionContainer.innerHTML = "";
+
+            const currentQuestion = questions[currentQuestionIndex];
+            questionContainer.textContent = currentQuestion.question;
+
+            shuffle(currentQuestion.options);
+
+            currentQuestion.options.forEach(option => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'option';
+                radio.value = option;
+                const label = document.createElement('label');
+                label.textContent = option;
+                label.prepend(radio);
+                optionElement.appendChild(label);
+                optionContainer.appendChild(optionElement);
+            });
+        }
+
+        function checkAnswer() {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            if (selectedOption) {
+                const answer = selectedOption.value;
+                if (answer === questions[currentQuestionIndex].correctAnswer) {
+                    resultContainer.textContent = "Correto!";
+                    resultContainer.style.color = "green";
+                } else {
+                    resultContainer.textContent = "Incorreto! A resposta correta é: " + questions[currentQuestionIndex].correctAnswer;
+                    resultContainer.style.color = "red";
+                }
+            } else {
+                resultContainer.textContent = "Por favor, selecione uma opção.";
+                resultContainer.style.color = "orange";
+            }
+        }
+
+        nextQuestionButton.addEventListener('click', function() {
+            checkAnswer();
+            currentQuestionIndex++;
+            if (currentQuestionIndex >= questions.length) {
+                currentQuestionIndex = 0;
+            }
+            loadQuestion();
         });
+
+        loadQuestion();  // Carrega a primeira pergunta
     </script>
 </body>
 </html>
