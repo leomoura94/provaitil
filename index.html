@@ -443,139 +443,139 @@
                 ]
             }
         ];
-  let currentQuestionIndex = 0;
-        let shuffledQuestions = [];
-        let answers = []; // Para armazenar respostas do usuário
+ let currentQuestionIndex = 0;
+let shuffledQuestions = [];
+let answers = []; // Para armazenar respostas do usuário
+let correctAnswersCount = 0; // Para armazenar o número de acertos
 
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function showQuestion(question) {
+    const quizDiv = document.getElementById('quiz');
+    quizDiv.innerHTML = `
+        <div class="question">${question.question}</div>
+        <ul class="answers">
+            ${question.answers.map((answer, index) => `
+                <li class="answer" data-index="${index}" data-correct="${answer.correct}">${answer.text}</li>
+            `).join('')}
+        </ul>
+    `;
+}
+
+function handleAnswerClick(event) {
+    if (event.target.classList.contains('answer')) {
+        const isCorrect = event.target.getAttribute('data-correct') === 'true';
+        const index = event.target.getAttribute('data-index');
+        
+        answers[currentQuestionIndex] = { index, isCorrect };
+
+        const allAnswers = document.querySelectorAll('.answer');
+        allAnswers.forEach(answer => {
+            if (answer.getAttribute('data-correct') === 'true') {
+                answer.classList.add('correct');
+            } else {
+                answer.classList.add('incorrect');
             }
+            answer.removeEventListener('click', handleAnswerClick);
+        });
+
+        if (isCorrect) {
+            event.target.classList.add('correct');
+            correctAnswersCount++;
+        } else {
+            event.target.classList.add('incorrect');
         }
 
-        function showQuestion(question) {
-            const quizDiv = document.getElementById('quiz');
-            quizDiv.innerHTML = `
+        document.getElementById('next').style.display = 'block';
+        document.getElementById('review').style.display = 'none';
+    }
+}
+
+function showResult() {
+    const quizDiv = document.getElementById('quiz');
+    quizDiv.innerHTML = `
+        <div class="result">
+            <h2>Fim do Quiz!</h2>
+            <p>Você acertou ${correctAnswersCount} de ${shuffledQuestions.length} perguntas.</p>
+            <p>Clique em "Reiniciar Quiz" para jogar novamente ou "Revisar Perguntas" para ver as respostas.</p>
+            <div class="review">
+                ${shuffledQuestions.map((question, index) => `
+                    <div class="question">${question.question}</div>
+                    <ul class="answers">
+                        ${question.answers.map((answer, i) => `
+                            <li class="answer ${answers[index] && answers[index].index == i ? 
+                                (answer.correct ? 'correct-final' : 'incorrect-final') 
+                                : ''} ${answer.correct ? 'correct-answer' : ''}" data-index="${i}">
+                                ${answer.text}
+                            </li>
+                        `).join('')}
+                    </ul>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    document.querySelector('#quiz').classList.add('review-mode');
+    document.getElementById('restart').style.display = 'block';
+    document.getElementById('review').style.display = 'none';
+    document.getElementById('next').style.display = 'none';
+}
+
+function restartQuiz() {
+    currentQuestionIndex = 0;
+    correctAnswersCount = 0; // Resetar o número de acertos
+    shuffleArray(questions);
+    shuffledQuestions = [...questions];
+    answers = [];
+    showQuestion(shuffledQuestions[currentQuestionIndex]);
+    document.getElementById('restart').style.display = 'none';
+    document.getElementById('next').style.display = 'block';
+    document.getElementById('review').style.display = 'none';
+    document.querySelector('#quiz').classList.remove('review-mode');
+}
+
+function showReview() {
+    const quizDiv = document.getElementById('quiz');
+    quizDiv.innerHTML = `
+        <div class="review">
+            ${shuffledQuestions.map((question, index) => `
                 <div class="question">${question.question}</div>
                 <ul class="answers">
-                    ${question.answers.map((answer, index) => `
-                        <li class="answer" data-index="${index}" data-correct="${answer.correct}">${answer.text}</li>
+                    ${question.answers.map((answer, i) => `
+                        <li class="answer ${answers[index] && answers[index].index == i ? 
+                            (answer.correct ? 'correct-final' : 'incorrect-final') 
+                            : ''} ${answer.correct ? 'correct-answer' : ''}" data-index="${i}">
+                            ${answer.text}
+                        </li>
                     `).join('')}
                 </ul>
-            `;
-        }
+            `).join('')}
+        </div>
+    `;
+    document.querySelector('#quiz').classList.add('review-mode');
+    document.getElementById('next').style.display = 'none';
+    document.getElementById('review').style.display = 'none';
+}
 
-        function handleAnswerClick(event) {
-            if (event.target.classList.contains('answer')) {
-                const isCorrect = event.target.getAttribute('data-correct') === 'true';
-                const index = event.target.getAttribute('data-index');
-                
-                answers[currentQuestionIndex] = { index, isCorrect };
-
-                const allAnswers = document.querySelectorAll('.answer');
-                allAnswers.forEach(answer => {
-                    if (answer.getAttribute('data-correct') === 'true') {
-                        answer.classList.add('correct');
-                    } else {
-                        answer.classList.add('incorrect');
-                    }
-                    answer.removeEventListener('click', handleAnswerClick);
-                });
-
-                if (isCorrect) {
-                    event.target.classList.add('correct');
-                } else {
-                    event.target.classList.add('incorrect');
-                }
-
-                document.getElementById('next').style.display = 'block';
-                document.getElementById('review').style.display = 'none';
-            }
-        }
-
-        function showResult() {
-            const quizDiv = document.getElementById('quiz');
-            quizDiv.innerHTML = `
-                <div class="result">
-                    <h2>Fim do Quiz!</h2>
-                    <p>Clique em "Reiniciar Quiz" para jogar novamente ou "Revisar Perguntas" para ver as respostas.</p>
-                    <div class="review">
-                        ${shuffledQuestions.map((question, index) => `
-                            <div class="question">${question.question}</div>
-                            <ul class="answers">
-                                ${question.answers.map((answer, i) => `
-                                    <li class="answer ${answers[index] && answers[index].index == i ? 
-                                        (answer.correct ? 'correct-final' : 'incorrect-final') 
-                                        : ''}" data-index="${i}">
-                                        ${answer.text}
-                                    </li>
-                                `).join('')}
-                            </ul>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-            document.querySelector('#quiz').classList.add('review-mode');
-            document.getElementById('restart').style.display = 'block';
-            document.getElementById('review').style.display = 'none';
-            document.getElementById('next').style.display = 'none';
-        }
-
-        function restartQuiz() {
-            currentQuestionIndex = 0;
-            shuffleArray(questions);
-            shuffledQuestions = [...questions];
-            answers = [];
-            showQuestion(shuffledQuestions[currentQuestionIndex]);
-            document.getElementById('restart').style.display = 'none';
-            document.getElementById('next').style.display = 'block';
-            document.getElementById('review').style.display = 'none';
-            document.querySelector('#quiz').classList.remove('review-mode');
-        }
-
-        function showReview() {
-            const quizDiv = document.getElementById('quiz');
-            quizDiv.innerHTML = `
-                <div class="review">
-                    ${shuffledQuestions.map((question, index) => `
-                        <div class="question">${question.question}</div>
-                        <ul class="answers">
-                            ${question.answers.map((answer, i) => `
-                                <li class="answer ${answers[index] && answers[index].index == i ? 
-                                    (answer.correct ? 'correct-final' : 'incorrect-final') 
-                                    : ''}" data-index="${i}">
-                                    ${answer.text}
-                                </li>
-                            `).join('')}
-                        </ul>
-                    `).join('')}
-                </div>
-            `;
-            document.querySelector('#quiz').classList.add('review-mode');
-            document.getElementById('next').style.display = 'none';
-            document.getElementById('review').style.display = 'none';
-        }
-
-        function handleNextClick() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < shuffledQuestions.length) {
-                showQuestion(shuffledQuestions[currentQuestionIndex]);
-            } else {
-                showResult();
-            }
-        }
-
-        document.getElementById('next').addEventListener('click', handleNextClick);
-        document.getElementById('restart').addEventListener('click', restartQuiz);
-        document.getElementById('review').addEventListener('click', showReview);
-
-        // Iniciar o quiz ao carregar a página
-        shuffleArray(questions);
-        shuffledQuestions = [...questions];
+function handleNextClick() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < shuffledQuestions.length) {
         showQuestion(shuffledQuestions[currentQuestionIndex]);
-        document.querySelector('#quiz').addEventListener('click', handleAnswerClick);
-    </script>
-</body>
-</html>
-    
+    } else {
+        showResult();
+    }
+}
+
+document.getElementById('next').addEventListener('click', handleNextClick);
+document.getElementById('restart').addEventListener('click', restartQuiz);
+document.getElementById('review').addEventListener('click', showReview);
+
+// Iniciar o quiz ao carregar a página
+shuffleArray(questions);
+shuffledQuestions = [...questions];
+showQuestion(shuffledQuestions[currentQuestionIndex]);
+document.querySelector('#quiz').addEventListener('click', handleAnswerClick);
