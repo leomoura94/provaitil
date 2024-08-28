@@ -43,6 +43,14 @@
             background-color: #f8d7da;
             border-color: #f5c6cb;
         }
+        .answer.correct-review {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .answer.incorrect-review {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
         .button {
             background-color: #007bff;
             color: #fff;
@@ -63,12 +71,6 @@
         }
         .review-mode .answer {
             cursor: default;
-        }
-        .correct-feedback {
-            color: #155724;
-        }
-        .incorrect-feedback {
-            color: #721c24;
         }
     </style>
 </head>
@@ -444,9 +446,7 @@
 
     let currentQuestionIndex = 0;
         let shuffledQuestions = [];
-        let answers = [];
-        let correctAnswersCount = 0;
-        let incorrectAnswersCount = 0;
+        let answers = []; // Para armazenar respostas do usuário
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -474,12 +474,6 @@
                 
                 answers[currentQuestionIndex] = { index, isCorrect };
 
-                if (isCorrect) {
-                    correctAnswersCount++;
-                } else {
-                    incorrectAnswersCount++;
-                }
-
                 const allAnswers = document.querySelectorAll('.answer');
                 allAnswers.forEach(answer => {
                     if (answer.getAttribute('data-correct') === 'true') {
@@ -503,20 +497,13 @@
 
         function showResult() {
             const quizDiv = document.getElementById('quiz');
-            quizDiv.innerHTML = `
-                <div class="result">
-                    Fim do Quiz! Você acertou ${correctAnswersCount} de ${questions.length} perguntas.
-                    <br>
-                    Clique em "Reiniciar Quiz" para jogar novamente ou "Revisar Perguntas" para ver as respostas.
-                </div>`;
+            quizDiv.innerHTML = `<div class="result">Fim do Quiz! Clique em "Reiniciar Quiz" para jogar novamente ou "Revisar Perguntas" para ver as respostas.</div>`;
             document.getElementById('restart').style.display = 'block';
             document.getElementById('review').style.display = 'block';
         }
 
         function restartQuiz() {
             currentQuestionIndex = 0;
-            correctAnswersCount = 0;
-            incorrectAnswersCount = 0;
             shuffleArray(questions);
             shuffledQuestions = [...questions];
             answers = [];
@@ -524,28 +511,37 @@
             document.getElementById('restart').style.display = 'none';
             document.getElementById('next').style.display = 'block';
             document.getElementById('review').style.display = 'none';
-            document.querySelector('#quiz').classList.remove('review-mode');
         }
 
         function showReview() {
+            let correctAnswersCount = 0;
+            let incorrectAnswersCount = 0;
+
             const quizDiv = document.getElementById('quiz');
             quizDiv.innerHTML = `
                 <div class="review">
-                    ${shuffledQuestions.map((question, index) => `
-                        <div class="question">${question.question}</div>
-                        <ul class="answers">
-                            ${question.answers.map((answer, i) => `
-                                <li class="answer ${answers[index] && answers[index].index == i ? (answer.correct ? 'correct' : 'incorrect') : ''}" data-index="${i}">
-                                    ${answer.text}
-                                </li>
-                            `).join('')}
-                        </ul>
-                    `).join('')}
-                    <div class="result">
-                        Total de perguntas: ${shuffledQuestions.length}<br>
-                        Acertos: ${correctAnswersCount}<br>
-                        Erros: ${incorrectAnswersCount}
-                    </div>
+                    ${shuffledQuestions.map((question, index) => {
+                        const userAnswer = answers[index];
+                        const answerClass = (userAnswer && !userAnswer.isCorrect) ? 'incorrect-review' : '';
+                        correctAnswersCount += (userAnswer && userAnswer.isCorrect) ? 1 : 0;
+                        incorrectAnswersCount += (userAnswer && !userAnswer.isCorrect) ? 1 : 0;
+
+                        return `
+                            <div class="question">${question.question}</div>
+                            <ul class="answers">
+                                ${question.answers.map((answer, i) => `
+                                    <li class="answer ${userAnswer && userAnswer.index == i ? (answer.correct ? 'correct-review' : 'incorrect-review') : ''}" data-index="${i}">
+                                        ${answer.text}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        `;
+                    }).join('')}
+                </div>
+                <div class="result">
+                    Total de Perguntas: ${shuffledQuestions.length}<br>
+                    Acertos: ${correctAnswersCount}<br>
+                    Erros: ${incorrectAnswersCount}
                 </div>
             `;
             document.querySelector('#quiz').classList.add('review-mode');
