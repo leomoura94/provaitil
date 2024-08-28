@@ -432,87 +432,78 @@
         ];
 
         let currentQuestionIndex = 0;
-        let score = 0;
-        let userAnswers = [];
-        
-        function showQuestion() {
-            const quizDiv = document.getElementById('quiz');
-            quizDiv.innerHTML = '';
-            
-            if (currentQuestionIndex >= questions.length) {
-                showResults();
-                return;
+        let shuffledQuestions = [];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
             }
-            
-            const question = questions[currentQuestionIndex];
-            const questionElem = document.createElement('div');
-            questionElem.classList.add('question');
-            questionElem.innerText = question.question;
-            quizDiv.appendChild(questionElem);
-            
-            const answersList = document.createElement('ul');
-            answersList.classList.add('answers');
-            
-            question.answers.forEach((answer, index) => {
-                const answerElem = document.createElement('li');
-                answerElem.classList.add('answer');
-                answerElem.innerText = answer.text;
-                answerElem.addEventListener('click', () => handleAnswerClick(index, answer.correct));
-                answersList.appendChild(answerElem);
-            });
-            
-            quizDiv.appendChild(answersList);
         }
-        
-        function handleAnswerClick(index, isCorrect) {
-            userAnswers[currentQuestionIndex] = {
-                index: index,
-                isCorrect: isCorrect
-            };
-            
-            if (isCorrect) {
-                score++;
-            }
-            
-            currentQuestionIndex++;
-            showQuestion();
-        }
-        
-        function showResults() {
+
+        function showQuestion(question) {
             const quizDiv = document.getElementById('quiz');
-            quizDiv.innerHTML = '';
-            
-            const resultDiv = document.createElement('div');
-            resultDiv.classList.add('result');
-            resultDiv.innerHTML = `Você acertou ${score} de ${questions.length} perguntas.`;
-            
-            const incorrectList = document.createElement('ul');
-            incorrectList.classList.add('answers');
-            
-            questions.forEach((question, questionIndex) => {
-                const userAnswer = userAnswers[questionIndex];
+            quizDiv.innerHTML = `
+                <div class="question">${question.question}</div>
+                <ul class="answers">
+                    ${question.answers.map((answer, index) => `
+                        <li class="answer" data-correct="${answer.correct}">${answer.text}</li>
+                    `).join('')}
+                </ul>
+            `;
+        }
+
+        function handleAnswerClick(event) {
+            if (event.target.classList.contains('answer')) {
+                const isCorrect = event.target.getAttribute('data-correct') === 'true';
+                const allAnswers = document.querySelectorAll('.answer');
+                allAnswers.forEach(answer => {
+                    if (answer.getAttribute('data-correct') === 'true') {
+                        answer.classList.add('correct');
+                    } else {
+                        answer.classList.add('incorrect');
+                    }
+                    answer.removeEventListener('click', handleAnswerClick);
+                });
                 
-                if (userAnswer && !userAnswer.isCorrect) {
-                    const incorrectElem = document.createElement('li');
-                    incorrectElem.innerHTML = `<strong>${question.question}</strong><br>Resposta correta: ${question.answers.find(answer => answer.correct).text}<br>Sua resposta: ${question.answers[userAnswer.index].text}`;
-                    incorrectList.appendChild(incorrectElem);
+                if (isCorrect) {
+                    event.target.classList.add('correct');
+                } else {
+                    event.target.classList.add('incorrect');
                 }
-            });
-            
-            resultDiv.appendChild(incorrectList);
-            quizDiv.appendChild(resultDiv);
+                
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    if (currentQuestionIndex < shuffledQuestions.length) {
+                        showQuestion(shuffledQuestions[currentQuestionIndex]);
+                    } else {
+                        showResult();
+                    }
+                }, 1000);
+            }
+        }
+
+        function showResult() {
+            const quizDiv = document.getElementById('quiz');
+            quizDiv.innerHTML = `<div class="result">Fim do Quiz! Clique em "Reiniciar Quiz" para jogar novamente.</div>`;
             document.getElementById('restart').style.display = 'block';
         }
-        
-        document.getElementById('restart').addEventListener('click', () => {
+
+        function restartQuiz() {
             currentQuestionIndex = 0;
-            score = 0;
-            userAnswers = [];
-            showQuestion();
+            shuffleArray(questions);
+            shuffledQuestions = [...questions];
+            showQuestion(shuffledQuestions[currentQuestionIndex]);
             document.getElementById('restart').style.display = 'none';
-        });
-        
-        showQuestion();
+        }
+
+        document.getElementById('restart').addEventListener('click', restartQuiz);
+
+        // Iniciar o quiz ao carregar a página
+        shuffleArray(questions);
+        shuffledQuestions = [...questions];
+        showQuestion(shuffledQuestions[currentQuestionIndex]);
+        document.querySelector('#quiz').addEventListener('click', handleAnswerClick);
     </script>
 </body>
 </html>
