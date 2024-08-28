@@ -435,8 +435,7 @@
                 ]
             }
         ];
-
-       let currentQuestionIndex = 0;
+ let currentQuestionIndex = 0;
         let shuffledQuestions = [];
         let answers = []; // Para armazenar respostas do usuário
 
@@ -513,7 +512,7 @@
                         <div class="question">${question.question}</div>
                         <ul class="answers">
                             ${question.answers.map((answer, i) => `
-                                <li class="answer ${answers[index] && answers[index].index == i ? (answer.correct ? 'correct' : 'incorrect') : ''}" data-index="${i}">
+                                <li class="answer ${answers[index] && answers[index].index == i ? (answer.correct ? 'correct-review' : 'incorrect-review') : ''}" data-index="${i}">
                                     ${answer.text}
                                 </li>
                             `).join('')}
@@ -547,3 +546,4 @@
     </script>
 </body>
 </html>
+    
