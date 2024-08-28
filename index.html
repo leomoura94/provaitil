@@ -43,11 +43,13 @@
             background-color: #f8d7da;
             border-color: #f5c6cb;
         }
-        .answer.correct-review {
-            background-color: #d4edda; /* Verde para corretas na revisão */
+        .answer.correct-final {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
         }
-        .answer.incorrect-review {
-            background-color: #f8d7da; /* Vermelho para incorretas na revisão */
+        .answer.incorrect-final {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
         }
         .button {
             background-color: #007bff;
@@ -441,7 +443,7 @@
                 ]
             }
         ];
- let currentQuestionIndex = 0;
+  let currentQuestionIndex = 0;
         let shuffledQuestions = [];
         let answers = []; // Para armazenar respostas do usuário
 
@@ -494,9 +496,30 @@
 
         function showResult() {
             const quizDiv = document.getElementById('quiz');
-            quizDiv.innerHTML = `<div class="result">Fim do Quiz! Clique em "Reiniciar Quiz" para jogar novamente ou "Revisar Perguntas" para ver as respostas.</div>`;
+            quizDiv.innerHTML = `
+                <div class="result">
+                    <h2>Fim do Quiz!</h2>
+                    <p>Clique em "Reiniciar Quiz" para jogar novamente ou "Revisar Perguntas" para ver as respostas.</p>
+                    <div class="review">
+                        ${shuffledQuestions.map((question, index) => `
+                            <div class="question">${question.question}</div>
+                            <ul class="answers">
+                                ${question.answers.map((answer, i) => `
+                                    <li class="answer ${answers[index] && answers[index].index == i ? 
+                                        (answer.correct ? 'correct-final' : 'incorrect-final') 
+                                        : ''}" data-index="${i}">
+                                        ${answer.text}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            document.querySelector('#quiz').classList.add('review-mode');
             document.getElementById('restart').style.display = 'block';
-            document.getElementById('review').style.display = 'block';
+            document.getElementById('review').style.display = 'none';
+            document.getElementById('next').style.display = 'none';
         }
 
         function restartQuiz() {
@@ -508,6 +531,7 @@
             document.getElementById('restart').style.display = 'none';
             document.getElementById('next').style.display = 'block';
             document.getElementById('review').style.display = 'none';
+            document.querySelector('#quiz').classList.remove('review-mode');
         }
 
         function showReview() {
@@ -518,7 +542,9 @@
                         <div class="question">${question.question}</div>
                         <ul class="answers">
                             ${question.answers.map((answer, i) => `
-                                <li class="answer ${answers[index] && answers[index].index == i ? (answer.correct ? 'correct-review' : 'incorrect-review') : ''}" data-index="${i}">
+                                <li class="answer ${answers[index] && answers[index].index == i ? 
+                                    (answer.correct ? 'correct-final' : 'incorrect-final') 
+                                    : ''}" data-index="${i}">
                                     ${answer.text}
                                 </li>
                             `).join('')}
