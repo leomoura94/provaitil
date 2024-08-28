@@ -54,18 +54,23 @@
         .button:hover {
             background-color: #0056b3;
         }
-        .result {
+        .result, .review {
             font-size: 1.2em;
             margin-bottom: 20px;
         }
-        #restart {
+        #restart, #next, #review {
             display: none;
+        }
+        .review-mode .answer {
+            cursor: default;
         }
     </style>
 </head>
 <body>
     <div id="quiz"></div>
+    <button id="next" class="button">Próxima Pergunta</button>
     <button id="restart" class="button">Reiniciar Quiz</button>
+    <button id="review" class="button">Revisar Perguntas</button>
     <script>
         const questions = [
             {
@@ -431,8 +436,9 @@
             }
         ];
 
-        let currentQuestionIndex = 0;
+       let currentQuestionIndex = 0;
         let shuffledQuestions = [];
+        let answers = []; // Para armazenar respostas do usuário
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -447,7 +453,7 @@
                 <div class="question">${question.question}</div>
                 <ul class="answers">
                     ${question.answers.map((answer, index) => `
-                        <li class="answer" data-correct="${answer.correct}">${answer.text}</li>
+                        <li class="answer" data-index="${index}" data-correct="${answer.correct}">${answer.text}</li>
                     `).join('')}
                 </ul>
             `;
@@ -456,6 +462,10 @@
         function handleAnswerClick(event) {
             if (event.target.classList.contains('answer')) {
                 const isCorrect = event.target.getAttribute('data-correct') === 'true';
+                const index = event.target.getAttribute('data-index');
+                
+                answers[currentQuestionIndex] = { index, isCorrect };
+
                 const allAnswers = document.querySelectorAll('.answer');
                 allAnswers.forEach(answer => {
                     if (answer.getAttribute('data-correct') === 'true') {
@@ -465,39 +475,69 @@
                     }
                     answer.removeEventListener('click', handleAnswerClick);
                 });
-                
+
                 if (isCorrect) {
                     event.target.classList.add('correct');
                 } else {
                     event.target.classList.add('incorrect');
                 }
-                
-                setTimeout(() => {
-                    currentQuestionIndex++;
-                    if (currentQuestionIndex < shuffledQuestions.length) {
-                        showQuestion(shuffledQuestions[currentQuestionIndex]);
-                    } else {
-                        showResult();
-                    }
-                }, 1000);
+
+                document.getElementById('next').style.display = 'block';
+                document.getElementById('review').style.display = 'none';
             }
         }
 
         function showResult() {
             const quizDiv = document.getElementById('quiz');
-            quizDiv.innerHTML = `<div class="result">Fim do Quiz! Clique em "Reiniciar Quiz" para jogar novamente.</div>`;
+            quizDiv.innerHTML = `<div class="result">Fim do Quiz! Clique em "Reiniciar Quiz" para jogar novamente ou "Revisar Perguntas" para ver as respostas.</div>`;
             document.getElementById('restart').style.display = 'block';
+            document.getElementById('review').style.display = 'block';
         }
 
         function restartQuiz() {
             currentQuestionIndex = 0;
             shuffleArray(questions);
             shuffledQuestions = [...questions];
+            answers = [];
             showQuestion(shuffledQuestions[currentQuestionIndex]);
             document.getElementById('restart').style.display = 'none';
+            document.getElementById('next').style.display = 'block';
+            document.getElementById('review').style.display = 'none';
         }
 
+        function showReview() {
+            const quizDiv = document.getElementById('quiz');
+            quizDiv.innerHTML = `
+                <div class="review">
+                    ${shuffledQuestions.map((question, index) => `
+                        <div class="question">${question.question}</div>
+                        <ul class="answers">
+                            ${question.answers.map((answer, i) => `
+                                <li class="answer ${answers[index] && answers[index].index == i ? (answer.correct ? 'correct' : 'incorrect') : ''}" data-index="${i}">
+                                    ${answer.text}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    `).join('')}
+                </div>
+            `;
+            document.querySelector('#quiz').classList.add('review-mode');
+            document.getElementById('next').style.display = 'none';
+            document.getElementById('review').style.display = 'none';
+        }
+
+        function handleNextClick() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < shuffledQuestions.length) {
+                showQuestion(shuffledQuestions[currentQuestionIndex]);
+            } else {
+                showResult();
+            }
+        }
+
+        document.getElementById('next').addEventListener('click', handleNextClick);
         document.getElementById('restart').addEventListener('click', restartQuiz);
+        document.getElementById('review').addEventListener('click', showReview);
 
         // Iniciar o quiz ao carregar a página
         shuffleArray(questions);
