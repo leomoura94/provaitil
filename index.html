@@ -18,6 +18,9 @@
         #navigation {
             margin-top: 20px;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -27,9 +30,9 @@
         <input type="text" id="name" name="name" required><br><br>
         <div id="questionContainer"></div>
         <div id="navigation">
-            <button type="button" id="prevBtn" onclick="prevQuestion()">Previous</button>
+            <button type="button" id="prevBtn" class="hidden" onclick="prevQuestion()">Previous</button>
             <button type="button" id="nextBtn" onclick="nextQuestion()">Next</button>
-            <button type="submit" id="submitBtn" style="display: none;">Submit</button>
+            <button type="submit" id="submitBtn" class="hidden">Submit</button>
         </div>
     </form>
     <div id="results"></div>
@@ -811,7 +814,7 @@ const questions = [
          // Continue com as outras perguntas
         ];
 
-        function shuffle(array) {
+      function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
@@ -843,12 +846,17 @@ const questions = [
                 </div>
             `;
 
-            document.getElementById('prevBtn').style.display = index === 0 ? 'none' : 'inline';
-            document.getElementById('nextBtn').style.display = index === selectedQuestions.length - 1 ? 'none' : 'inline';
-            document.getElementById('submitBtn').style.display = index === selectedQuestions.length - 1 ? 'inline' : 'none';
+            document.getElementById('prevBtn').classList.toggle('hidden', index === 0);
+            document.getElementById('nextBtn').textContent = index === selectedQuestions.length - 1 ? 'Submit' : 'Next';
+            document.getElementById('submitBtn').classList.toggle('hidden', index !== selectedQuestions.length - 1);
         }
 
         function nextQuestion() {
+            const isAnswered = document.querySelector(`input[name="q${currentQuestionIndex}"]:checked`);
+            if (!isAnswered) {
+                alert('Por favor, responda a pergunta antes de prosseguir.');
+                return;
+            }
             if (currentQuestionIndex < selectedQuestions.length - 1) {
                 currentQuestionIndex++;
                 showQuestion(currentQuestionIndex);
