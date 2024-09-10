@@ -3,648 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITIL v4 Practice Test</title>
+    <title>ITIL Quiz</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .question { margin-bottom: 20px; }
-        .question h3 { margin-bottom: 10px; }
-        .question label { display: block; }
-        button { margin-top: 20px; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #questions {
+            margin-bottom: 20px;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .question label {
+            display: block;
+        }
     </style>
 </head>
 <body>
-    <h1>ITIL v4 Practice Test</h1>
-    <form id="quiz-form">
-        <!-- Question 1 -->
-        <div class="question">
-            <h3>1. O que é gestão de incidentes no ITIL v4?</h3>
-            <label><input type="radio" name="q1" value="0"> Identificação e análise de problemas</label>
-            <label><input type="radio" name="q1" value="1"> Restauração rápida do serviço </label>
-            <label><input type="radio" name="q1" value="0"> Monitoramento de desempenho de serviços</label>
-        </div>
-
-        <!-- Question 2 -->
-        <div class="question">
-            <h3>2. Qual é o objetivo da gestão de mudanças no ITIL v4?</h3>
-            <label><input type="radio" name="q2" value="1"> Gerenciar mudanças com impacto mínimo </label>
-            <label><input type="radio" name="q2" value="0"> Implementar novos serviços rapidamente</label>
-            <label><input type="radio" name="q2" value="0"> Reduzir incidentes de segurança</label>
-        </div>
- <!-- Question 3 -->
-        <div class="question">
-            <h3>3. Qual dos itens abaixo concede ao usuário acesso a um sistema?</h3>
-            <label><input type="radio" name="q3" value="0"> Requisição de serviço</label>
-            <label><input type="radio" name="q3" value="0"> Acordo de serviço</label>
-            <label><input type="radio" name="q3" value="0"> Consumo de serviço</label>
-            <label><input type="radio" name="q3" value="1"> Provisão de serviço</label>
-        </div>
-
-        <!-- Question 4 -->
-        <div class="question">
-            <h3>4. Qual princípio se concentra nos consumidores de serviço?</h3>
-            <label><input type="radio" name="q4" value="0"> Começar de onde você está</label>
-            <label><input type="radio" name="q4" value="0"> Otimizar e automatizar</label>
-            <label><input type="radio" name="q4" value="0"> Manter de forma simples</label>
-            <label><input type="radio" name="q4" value="1"> Foco no valor</label>
-        </div>
-
-        <!-- Question 5 -->
-        <div class="question">
-            <h3>5. O que é importante para um registro de melhoria contínua (RCM)?</h3>
-            <label><input type="radio" name="q5" value="1"> As ideias de melhoria são documentadas, avaliadas e priorizadas.</label>
-            <label><input type="radio" name="q5" value="0"> As ideias de melhoria de várias fontes são mantidas em um único RCM.</label>
-            <label><input type="radio" name="q5" value="0"> As ideias de melhoria que não são imediatamente executadas são removidas ao RCM.</label>
-            <label><input type="radio" name="q5" value="0"> As ideias de melhoria são testadas, financiadas e acordadas.</label>
-        </div>
-
-        <!-- Question 6 -->
-        <div class="question">
-            <h3>6. Que atividade contribui com a etapa “Onde estamos agora? do modelo de melhoria contínua?</h3>
-            <label><input type="radio" name="q6" value="0"> Execução de ações de melhoria</label>
-            <label><input type="radio" name="q6" value="1"> Realização de avaliações da linha de base</label>
-            <label><input type="radio" name="q6" value="0"> Definição de um plano de melhoria</label>
-            <label><input type="radio" name="q6" value="0"> Entendimento de Missão de Negócio</label>
-        </div>
-
-        <!-- Question 7 -->
-        <div class="question">
-            <h3>7. Como um consumidor de serviço contribui com a redução de risco?</h3>
-            <label><input type="radio" name="q7" value="0"> Pagamento pelo serviço</label>
-            <label><input type="radio" name="q7" value="0"> Gerenciando o hardware do servidor</label>
-            <label><input type="radio" name="q7" value="1"> Comunicando as restrições</label>
-            <label><input type="radio" name="q7" value="0"> Gerenciando a disponibilidade da equipe</label>
-        </div>
-
-        <!-- Question 8 -->
-        <div class="question">
-            <h3>8. O uso de ....... deve suportar e não substituir o que é observado ao adotar o princípio orientador “Começar de onde você está”.</h3>
-            <label><input type="radio" name="q8" value="1"> Medição</label>
-            <label><input type="radio" name="q8" value="0"> Ferramentas</label>
-            <label><input type="radio" name="q8" value="0"> Planos</label>
-            <label><input type="radio" name="q8" value="0"> Processo</label>
-        </div>
-
-        <!-- Question 9 -->
-        <div class="question">
-            <h3>9. Qual é um meio que permite a co-criação de valor ao facilitar a obtenção dos resultados que os clientes desejam, sem que eles precisem gerenciar custos e riscos específicos.</h3>
-            <label><input type="radio" name="q9" value="0"> Gerenciamento do Serviço</label>
-            <label><input type="radio" name="q9" value="0"> Melhoria contínua</label>
-            <label><input type="radio" name="q9" value="1"> Um serviço</label>
-            <label><input type="radio" name="q9" value="0"> Um ativo de TI</label>
-        </div>
-
-        <!-- Question 10 -->
-        <div class="question">
-            <h3>10. Quais são as 3 fases do Gerenciamento de Problemas?</h3>
-            <label><input type="radio" name="q10" value="0"> Registro de problema, classificação do problema e resolução do problema.</label>
-            <label><input type="radio" name="q10" value="0"> Gerenciamento de incidente, Gerenciamento de problema e habilitação de mudança</label>
-            <label><input type="radio" name="q10" value="1"> Identificação do problema, controle do problema e controle de erros.</label>
-            <label><input type="radio" name="q10" value="0"> Análise de problema, identificação de erro e resolução de incidente.</label>
-        </div>
-
-        <!-- Question 11 -->
-        <div class="question">
-            <h3>11. Qual é o melhor exemplo de uma mudança padrão?</h3>
-            <label><input type="radio" name="q11" value="0"> Revisão e autorização de uma mudança solicitada por um cliente.</label>
-            <label><input type="radio" name="q11" value="0"> Implementação de uma autorização de software crítico em resposta a uma questão de segurança de fornecedor.</label>
-            <label><input type="radio" name="q11" value="1"> Instalação de um aplicativo de software em resposta a uma requisição de serviço.</label>
-            <label><input type="radio" name="q11" value="0"> Substituição de um componente em resposta a um incidente grave.</label>
-        </div>
-
-        <!-- Question 12 -->
-        <div class="question">
-            <h3>12. Que dimensão considera o modo como os ativos de conhecimento devem ser protegidos?</h3>
-            <label><input type="radio" name="q12" value="0"> Organizações e pessoas</label>
-            <label><input type="radio" name="q12" value="0"> Parceiros e fornecedores</label>
-            <label><input type="radio" name="q12" value="1"> Informação e tecnologia</label>
-            <label><input type="radio" name="q12" value="0"> Fluxos de valor e processos</label>
-        </div>
-
-        <!-- Question 13 -->
-        <div class="question">
-            <h3>13. Como as informações sobre problemas e erros conhecidos contribuem com o Gerenciamento de Incidente?</h3>
-            <label><input type="radio" name="q13" value="0"> Proporcionando informações detalhadas sobre a falha do ativo.</label>
-            <label><input type="radio" name="q13" value="1"> Melhorando a eficiência ao reduzir a necessidade de escalonamento.</label>
-            <label><input type="radio" name="q13" value="0"> Apresentando justificativa para iniciar uma solicitação de mudança.</label>
-            <label><input type="radio" name="q13" value="0"> Proporcionando informações detalhadas sobre incidentes.</label>
-        </div>
-
-        <!-- Question 14 -->
-        <div class="question">
-            <h3>14. Qual é o propósito da prática de Gerenciamento de Mudança?</h3>
-            <label><input type="radio" name="q14" value="1"> Garantir que os riscos tenham sido adequadamente avaliados.</label>
-            <label><input type="radio" name="q14" value="0"> Assegurar que todos os ativos sejam registrados.</label>
-            <label><input type="radio" name="q14" value="0"> Registrar e gerenciar incidentes.</label>
-            <label><input type="radio" name="q14" value="0"> Proteger a informação necessária para gerenciar incidentes.</label>
-        </div>
-
-        <!-- Question 15 -->
-        <div class="question">
-            <h3>15. O que um provedor de serviço utiliza para fornecer uma visão lógica de uma infraestrutura de serviço?</h3>
-            <label><input type="radio" name="q15" value="0"> Ferramenta de Gerenciamento de Serviço</label>
-            <label><input type="radio" name="q15" value="1"> Sistema de Gerenciamento de Configuração</label>
-            <label><input type="radio" name="q15" value="0"> Repositório de Ativos de Serviço</label>
-            <label><input type="radio" name="q15" value="0"> Repositório de informações de serviço</label>
-        </div>
-
-        <!-- Question 16 -->
-        <div class="question">
-            <h3>16. Que prática é usada para minimizar o impacto negativo dos incidentes, restaurando a operação normal o mais rápido possível?</h3>
-            <label><input type="radio" name="q16" value="0"> Gerenciamento de Mudança</label>
-            <label><input type="radio" name="q16" value="0"> Gerenciamento de Problema</label>
-            <label><input type="radio" name="q16" value="1"> Gerenciamento de Incidente</label>
-            <label><input type="radio" name="q16" value="0"> Gerenciamento de Requisição de Serviço</label>
-        </div>
-
-        <!-- Question 17 -->
-        <div class="question">
-            <h3>17. Qual é o propósito da prática de Central de Serviço?</h3>
-            <label><input type="radio" name="q17" value="1"> Capturar demanda para requisições de serviço e incidentes</label>
-            <label><input type="radio" name="q17" value="0"> Investigar a causa de incidentes</label>
-            <label><input type="radio" name="q17" value="0"> Gerenciar as requisições de serviço predefinidas</label>
-            <label><input type="radio" name="q17" value="0"> Minimizar o impacto das interrupções do serviço</label>
-        </div>
-
-        <!-- Question 18 -->
-        <div class="question">
-            <h3>18. Qual das opções a seguir é uma prática no ITIL?</h3>
-            <label><input type="radio" name="q18" value="1"> Gerenciamento de incidente</label>
-            <label><input type="radio" name="q18" value="0"> Otimização do valor</label>
-            <label><input type="radio" name="q18" value="0"> Foco no valor</label>
-            <label><input type="radio" name="q18" value="0"> Trabalho em equipe</label>
-        </div>
-
-        <!-- Question 19 -->
-        <div class="question">
-            <h3>19. Qual das alternativas a seguir seria mais apropriada para definir um Evento no ITIL4?</h3>
-            <label><input type="radio" name="q19" value="0"> Garantir que o serviço de TI permaneça disponível</label>
-            <label><input type="radio" name="q19" value="0"> Criar mudanças para adicionar novas funcionalidades</label>
-            <label><input type="radio" name="q19" value="0"> Restauração do serviço</label>
-            <label><input type="radio" name="q19" value="1"> Qualquer mudança de estado que tenha significado para o gerenciamento de um serviço ou outro item de configuração (CI).</label>
-        </div>
-
-        <!-- Question 20 -->
-        <div class="question">
-            <h3>20. Qual das seguintes opções melhor descreve a atividade 'Engage' na cadeia de valor de serviço do ITIL?</h3>
-            <label><input type="radio" name="q20" value="1"> Interagir com as partes interessadas</label>
-            <label><input type="radio" name="q20" value="0"> Planejar e construir um serviço</label>
-            <label><input type="radio" name="q20" value="0"> Gerenciar a entrega de serviços</label>
-            <label><input type="radio" name="q20" value="0"> Garantir a melhoria contínua</label>
-        </div>
-
-        <!-- Question 21 -->
-        <div class="question">
-            <h3>21. Qual é o principal objetivo da fase 'Plan' na cadeia de valor de serviço do ITIL?</h3>
-            <label><input type="radio" name="q21" value="0"> Definir as necessidades dos clientes</label>
-            <label><input type="radio" name="q21" value="0"> Construir e testar novos serviços</label>
-            <label><input type="radio" name="q21" value="0"> Melhorar continuamente os serviços</label>
-            <label><input type="radio" name="q21" value="1"> Garantir uma compreensão compartilhada da visão, estado atual e direção de melhoria para as quatro dimensões e todos os produtos e serviços em toda a organização.</label>
-        </div>
-
-        <!-- Question 22 -->
-        <div class="question">
-            <h3>22. Qual prática do ITIL está focada em garantir que as mudanças organizacionais e de tecnologia sejam implantadas com sucesso?</h3>
-            <label><input type="radio" name="q22" value="0"> Gerenciamento de incidentes</label>
-            <label><input type="radio" name="q22" value="1"> Gerenciamento de mudanças</label>
-            <label><input type="radio" name="q22" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q22" value="0"> Gerenciamento de disponibilidade</label>
-        </div>
-
-        <!-- Question 23 -->
-        <div class="question">
-            <h3>23. O que é um 'Workaround' em termos de gerenciamento de problemas?</h3>
-            <label><input type="radio" name="q23" value="0"> Uma solução temporária para um incidente</label>
-            <label><input type="radio" name="q23" value="0"> Uma alteração emergencial em um serviço</label>
-            <label><input type="radio" name="q23" value="1"> Uma solução temporária para reduzir ou eliminar o impacto de um problema para o qual uma resolução completa ainda não está disponível</label>
-            <label><input type="radio" name="q23" value="0"> Um registro detalhado de um erro conhecido</label>
-        </div>
-
-        <!-- Question 24 -->
-        <div class="question">
-            <h3>24. Qual das opções a seguir é um tipo de mudança no ITIL?</h3>
-            <label><input type="radio" name="q24" value="0"> Mudança programada</label>
-            <label><input type="radio" name="q24" value="1"> Mudança emergencial</label>
-            <label><input type="radio" name="q24" value="0"> Mudança tática</label>
-            <label><input type="radio" name="q24" value="0"> Mudança estratégica</label>
-        </div>
-
-        <!-- Question 25 -->
-        <div class="question">
-            <h3>25. Qual prática do ITIL visa criar e compartilhar uma visão para permitir e encorajar a melhoria contínua?</h3>
-            <label><input type="radio" name="q25" value="0"> Gerenciamento de mudanças</label>
-            <label><input type="radio" name="q25" value="1"> Melhoria contínua</label>
-            <label><input type="radio" name="q25" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q25" value="0"> Central de serviços</label>
-        </div>
-
-        <!-- Question 26 -->
-        <div class="question">
-            <h3>26. Como é chamada a etapa no ciclo de vida de um serviço onde se garante que os serviços atingem as expectativas de desempenho acordadas?</h3>
-            <label><input type="radio" name="q26" value="0"> Entrega de serviço</label>
-            <label><input type="radio" name="q26" value="0"> Otimização de serviço</label>
-            <label><input type="radio" name="q26" value="0"> Transição de serviço</label>
-            <label><input type="radio" name="q26" value="1"> Desempenho de serviço</label>
-        </div>
-
-        <!-- Question 27 -->
-        <div class="question">
-            <h3>27. Qual prática do ITIL está focada na criação de valor para os stakeholders na forma de serviços?</h3>
-            <label><input type="radio" name="q27" value="1"> Gerenciamento de portfólio</label>
-            <label><input type="radio" name="q27" value="0"> Gerenciamento de mudança</label>
-            <label><input type="radio" name="q27" value="0"> Melhoria contínua</label>
-            <label><input type="radio" name="q27" value="0"> Gerenciamento de problema</label>
-        </div>
-
-        <!-- Question 28 -->
-        <div class="question">
-            <h3>28. Qual prática do ITIL é responsável por gerenciar riscos que podem afetar os serviços?</h3>
-            <label><input type="radio" name="q28" value="1"> Gerenciamento de disponibilidade</label>
-            <label><input type="radio" name="q28" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q28" value="0"> Gerenciamento de incidentes</label>
-            <label><input type="radio" name="q28" value="0"> Gerenciamento de mudança</label>
-        </div>
-
-        <!-- Question 29 -->
-        <div class="question">
-            <h3>29. Qual prática do ITIL foca em permitir que a organização utilize ativos de serviço para alcançar resultados valiosos?</h3>
-            <label><input type="radio" name="q29" value="0"> Gerenciamento de conhecimento</label>
-            <label><input type="radio" name="q29" value="1"> Gerenciamento de ativos de serviço</label>
-            <label><input type="radio" name="q29" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q29" value="0"> Gerenciamento de mudança</label>
-        </div>
-
-        <!-- Question 30 -->
-        <div class="question">
-            <h3>30. O que é uma base de dados de gerenciamento de configuração (CMDB)?</h3>
-            <label><input type="radio" name="q30" value="0"> Um conjunto de ferramentas e bancos de dados que são usados para gerenciar dados de configuração</label>
-            <label><input type="radio" name="q30" value="0"> Um banco de dados utilizado para armazenar eventos</label>
-            <label><input type="radio" name="q30" value="1"> Um banco de dados utilizado para armazenar informações sobre itens de configuração (CIs) ao longo de seu ciclo de vida</label>
-            <label><input type="radio" name="q30" value="0"> Um banco de dados utilizado para gerenciar incidentes</label>
-        </div>
-
-        <!-- Question 31 -->
-        <div class="question">
-            <h3>31. Qual prática do ITIL visa garantir que os serviços sejam entregues de acordo com os acordos de nível de serviço acordados?</h3>
-            <label><input type="radio" name="q31" value="1"> Gerenciamento de nível de serviço</label>
-            <label><input type="radio" name="q31" value="0"> Gerenciamento de mudança</label>
-            <label><input type="radio" name="q31" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q31" value="0"> Gerenciamento de incidente</label>
-        </div>
-
-        <!-- Question 32 -->
-        <div class="question">
-            <h3>32. Qual é a definição de 'valor' no contexto do ITIL?</h3>
-            <label><input type="radio" name="q32" value="1"> A percepção dos benefícios, utilidade e importância de algo</label>
-            <label><input type="radio" name="q32" value="0"> A quantia de dinheiro que algo custa</label>
-            <label><input type="radio" name="q32" value="0"> O esforço necessário para alcançar algo</label>
-            <label><input type="radio" name="q32" value="0"> A medida de quão bem algo atende às especificações</label>
-        </div>
-
-        <!-- Question 33 -->
-        <div class="question">
-            <h3>33. Qual prática do ITIL se concentra em permitir que a organização maximize o valor de seus ativos?</h3>
-            <label><input type="radio" name="q33" value="0"> Gerenciamento de mudança</label>
-            <label><input type="radio" name="q33" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q33" value="0"> Melhoria contínua</label>
-            <label><input type="radio" name="q33" value="1"> Gerenciamento de ativos</label>
-        </div>
-
-        <!-- Question 34 -->
-        <div class="question">
-            <h3>34. Qual é o propósito da prática de gerenciamento de mudança?</h3>
-            <label><input type="radio" name="q34" value="0"> Proteger a informação necessária para gerenciar incidentes</label>
-            <label><input type="radio" name="q34" value="0"> Registrar e gerenciar incidentes</label>
-            <label><input type="radio" name="q34" value="1"> Garantir que os riscos sejam adequadamente avaliados</label>
-            <label><input type="radio" name="q34" value="0"> Assegurar que todos os ativos sejam registrados</label>
-        </div>
-
-        <!-- Question 35 -->
-        <div class="question">
-            <h3>35. Qual prática do ITIL gerencia o ciclo de vida completo de todas as mudanças?</h3>
-            <label><input type="radio" name="q35" value="0"> Gerenciamento de mudança</label>
-            <label><input type="radio" name="q35" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q35" value="1"> Gerenciamento de configuração</label>
-            <label><input type="radio" name="q35" value="0"> Gerenciamento de incidente</label>
-        </div>
-
-        <!-- Question 36 -->
-        <div class="question">
-            <h3>36. Qual prática do ITIL visa minimizar o impacto negativo de incidentes restaurando a operação normal do serviço o mais rápido possível?</h3>
-            <label><input type="radio" name="q36" value="1"> Gerenciamento de incidente</label>
-            <label><input type="radio" name="q36" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q36" value="0"> Gerenciamento de mudança</label>
-            <label><input type="radio" name="q36" value="0"> Gerenciamento de evento</label>
-        </div>
-
-        <!-- Question 37 -->
-        <div class="question">
-            <h3>37. Qual prática do ITIL garante que serviços entreguem os níveis de desempenho acordados?</h3>
-            <label><input type="radio" name="q37" value="0"> Gerenciamento de disponibilidade</label>
-            <label><input type="radio" name="q37" value="1"> Gerenciamento de nível de serviço</label>
-            <label><input type="radio" name="q37" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q37" value="0"> Gerenciamento de incidente</label>
-        </div>
-
-        <!-- Question 38 -->
-        <div class="question">
-            <h3>38. Qual é a definição de um incidente em termos de ITIL?</h3>
-            <label><input type="radio" name="q38" value="1"> Uma interrupção não planejada de um serviço ou uma redução na qualidade de um serviço</label>
-            <label><input type="radio" name="q38" value="0"> Qualquer evento que precise ser analisado para determinar a causa raiz</label>
-            <label><input type="radio" name="q38" value="0"> Qualquer solicitação de mudança no serviço</label>
-            <label><input type="radio" name="q38" value="0"> Qualquer interrupção planejada de um serviço</label>
-        </div>
-
-        <!-- Question 39 -->
-        <div class="question">
-            <h3>39. Qual prática do ITIL é responsável por permitir que as organizações gerenciem riscos e problemas que podem afetar a disponibilidade de serviços?</h3>
-            <label><input type="radio" name="q39" value="0"> Gerenciamento de configuração</label>
-            <label><input type="radio" name="q39" value="0"> Gerenciamento de mudança</label>
-            <label><input type="radio" name="q39" value="1"> Gerenciamento de disponibilidade</label>
-            <label><input type="radio" name="q39" value="0"> Gerenciamento de incidentes</label>
-        </div>
-
-        <!-- Question 40 -->
-        <div class="question">
-            <h3>40. Qual prática do ITIL visa garantir que a informação correta esteja disponível para tomada de decisões em toda a organização?</h3>
-            <label><input type="radio" name="q40" value="0"> Gerenciamento de ativos de serviço</label>
-            <label><input type="radio" name="q40" value="1"> Gerenciamento de conhecimento</label>
-            <label><input type="radio" name="q40" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q40" value="0"> Gerenciamento de incidente</label>
-        </div>
-
-        <!-- Question 41 -->
-        <div class="question">
-            <h3>41. Qual prática do ITIL é responsável por gerenciar o ciclo de vida de todos os problemas?</h3>
-            <label><input type="radio" name="q41" value="0"> Gerenciamento de configuração</label>
-            <label><input type="radio" name="q41" value="1"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q41" value="0"> Gerenciamento de mudança</label>
-            <label><input type="radio" name="q41" value="0"> Gerenciamento de incidente</label>
-        </div>
-
-        <!-- Question 42 -->
-        <div class="question">
-            <h3>42. Qual prática do ITIL visa ajudar a organização a entender melhor os seus clientes e garantir que seus serviços atendam às necessidades dos mesmos?</h3>
-            <label><input type="radio" name="q42" value="0"> Gerenciamento de ativos de serviço</label>
-            <label><input type="radio" name="q42" value="0"> Gerenciamento de incidente</label>
-            <label><input type="radio" name="q42" value="0"> Gerenciamento de mudança</label>
-            <label><input type="radio" name="q42" value="1"> Gerenciamento de relacionamento</label>
-        </div>
-
-        <!-- Question 43 -->
-        <div class="question">
-            <h3>43. Qual é o principal objetivo da fase 'Obtain/Build' na cadeia de valor de serviço do ITIL?</h3>
-            <label><input type="radio" name="q43" value="0"> Criar e manter relacionamentos saudáveis com as partes interessadas</label>
-            <label><input type="radio" name="q43" value="0"> Gerenciar o desempenho de serviços e garantir que eles atendam aos padrões de qualidade</label>
-            <label><input type="radio" name="q43" value="1"> Garantir que os componentes de serviço estejam disponíveis quando e onde forem necessários e que atendam aos requisitos de qualidade</label>
-            <label><input type="radio" name="q43" value="0"> Monitorar e avaliar o desempenho de serviços</label>
-        </div>
-
-        <!-- Question 44 -->
-        <div class="question">
-            <h3>44. Qual prática do ITIL visa melhorar continuamente a eficácia e a eficiência dos serviços e processos de TI?</h3>
-            <label><input type="radio" name="q44" value="0"> Gerenciamento de ativos de serviço</label>
-            <label><input type="radio" name="q44" value="0"> Gerenciamento de configuração</label>
-            <label><input type="radio" name="q44" value="1"> Melhoria contínua</label>
-            <label><input type="radio" name="q44" value="0"> Gerenciamento de problema</label>
-        </div>
-
-        <!-- Question 45 -->
-        <div class="question">
-            <h3>45. Qual é o objetivo da prática de gerenciamento de nível de serviço?</h3>
-            <label><input type="radio" name="q45" value="0"> Gerenciar o ciclo de vida de todos os problemas</label>
-            <label><input type="radio" name="q45" value="0"> Garantir que os riscos sejam adequadamente avaliados</label>
-            <label><input type="radio" name="q45" value="0"> Assegurar que todos os ativos sejam registrados</label>
-            <label><input type="radio" name="q45" value="1"> Garantir que os níveis de desempenho acordados dos serviços sejam entregues aos clientes e usuários</label>
-        </div>
-
-        <!-- Question 46 -->
-        <div class="question">
-            <h3>46. Qual é o objetivo da prática de gerenciamento de configuração e ativos de serviço?</h3>
-            <label><input type="radio" name="q46" value="0"> Garantir que os níveis de desempenho acordados dos serviços sejam entregues aos clientes e usuários</label>
-            <label><input type="radio" name="q46" value="0"> Gerenciar o ciclo de vida de todos os problemas</label>
-            <label><input type="radio" name="q46" value="1"> Garantir que os ativos necessários sejam disponibilizados e usados de maneira eficaz e eficiente</label>
-            <label><input type="radio" name="q46" value="0"> Proteger a informação necessária para gerenciar incidentes</label>
-        </div>
-
-        <!-- Question 47 -->
-        <div class="question">
-            <h3>47. Qual prática do ITIL é responsável por gerenciar eventos em um serviço?</h3>
-            <label><input type="radio" name="q47" value="0"> Gerenciamento de incidente</label>
-            <label><input type="radio" name="q47" value="1"> Gerenciamento de evento</label>
-            <label><input type="radio" name="q47" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q47" value="0"> Gerenciamento de mudança</label>
-        </div>
-
-        <!-- Question 48 -->
-        <div class="question">
-            <h3>48. Qual é o objetivo da prática de gerenciamento de problema?</h3>
-            <label><input type="radio" name="q48" value="0"> Garantir que os níveis de desempenho acordados dos serviços sejam entregues aos clientes e usuários</label>
-            <label><input type="radio" name="q48" value="1"> Gerenciar o ciclo de vida de todos os problemas</label>
-            <label><input type="radio" name="q48" value="0"> Garantir que os riscos sejam adequadamente avaliados</label>
-            <label><input type="radio" name="q48" value="0"> Proteger a informação necessária para gerenciar incidentes</label>
-        </div>
-
-        <!-- Question 49 -->
-        <div class="question">
-            <h3>49. Qual prática do ITIL é responsável por criar valor para os stakeholders na forma de serviços?</h3>
-            <label><input type="radio" name="q49" value="0"> Gerenciamento de disponibilidade</label>
-            <label><input type="radio" name="q49" value="0"> Gerenciamento de mudança</label>
-            <label><input type="radio" name="q49" value="1"> Gerenciamento de portfólio</label>
-            <label><input type="radio" name="q49" value="0"> Gerenciamento de problema</label>
-        </div>
-
-        <!-- Question 50 -->
-        <div class="question">
-            <h3>50. Qual prática do ITIL é responsável por capturar a demanda por incidentes e requisições de serviço?</h3>
-            <label><input type="radio" name="q50" value="0"> Gerenciamento de mudança</label>
-            <label><input type="radio" name="q50" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q50" value="0"> Melhoria contínua</label>
-            <label><input type="radio" name="q50" value="1"> Central de serviços</label>
-        </div>
-
-        <!-- Question 51 -->
-        <div class="question">
-            <h3>51. Qual é o propósito da prática de gerenciamento de mudança?</h3>
-            <label><input type="radio" name="q51" value="0"> Garantir que os níveis de desempenho acordados dos serviços sejam entregues aos clientes e usuários</label>
-            <label><input type="radio" name="q51" value="0"> Gerenciar o ciclo de vida de todos os problemas</label>
-            <label><input type="radio" name="q51" value="0"> Garantir que os ativos necessários sejam disponibilizados e usados de maneira eficaz e eficiente</label>
-            <label><input type="radio" name="q51" value="1"> Garantir que os riscos sejam adequadamente avaliados</label>
-        </div>
-
-        <!-- Question 52 -->
-        <div class="question">
-            <h3>52. Qual prática do ITIL é responsável por assegurar que a organização maximize o valor de seus ativos?</h3>
-            <label><input type="radio" name="q52" value="0"> Gerenciamento de mudança</label>
-            <label><input type="radio" name="q52" value="1"> Gerenciamento de ativos</label>
-            <label><input type="radio" name="q52" value="0"> Melhoria contínua</label>
-            <label><input type="radio" name="q52" value="0"> Gerenciamento de problema</label>
-        </div>
-
-        <!-- Question 53 -->
-        <div class="question">
-            <h3>53. Qual prática do ITIL visa minimizar o impacto negativo de incidentes restaurando a operação normal do serviço o mais rápido possível?</h3>
-            <label><input type="radio" name="q53" value="0"> Gerenciamento de evento</label>
-            <label><input type="radio" name="q53" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q53" value="1"> Gerenciamento de incidente</label>
-            <label><input type="radio" name="q53" value="0"> Gerenciamento de mudança</label>
-        </div>
-
-        <!-- Question 54 -->
-        <div class="question">
-            <h3>54. Qual prática do ITIL é responsável por gerenciar o ciclo de vida completo de todas as mudanças?</h3>
-            <label><input type="radio" name="q54" value="0"> Gerenciamento de incidente</label>
-            <label><input type="radio" name="q54" value="1"> Gerenciamento de mudança</label>
-            <label><input type="radio" name="q54" value="0"> Gerenciamento de configuração</label>
-            <label><input type="radio" name="q54" value="0"> Gerenciamento de problema</label>
-        </div>
-
-        <!-- Question 55 -->
-        <div class="question">
-            <h3>55. Qual prática do ITIL visa garantir que serviços entreguem os níveis de desempenho acordados?</h3>
-            <label><input type="radio" name="q55" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q55" value="0"> Gerenciamento de incidente</label>
-            <label><input type="radio" name="q55" value="1"> Gerenciamento de nível de serviço</label>
-            <label><input type="radio" name="q55" value="0"> Gerenciamento de disponibilidade</label>
-        </div>
-
-        <!-- Question 56 -->
-        <div class="question">
-            <h3>56. Qual é a definição de um incidente em termos de ITIL?</h3>
-            <label><input type="radio" name="q56" value="0"> Qualquer interrupção planejada de um serviço</label>
-            <label><input type="radio" name="q56" value="0"> Qualquer solicitação de mudança no serviço</label>
-            <label><input type="radio" name="q56" value="1"> Uma interrupção não planejada de um serviço ou uma redução na qualidade de um serviço</label>
-            <label><input type="radio" name="q56" value="0"> Qualquer evento que precise ser analisado para determinar a causa raiz</label>
-        </div>
-
-        <!-- Question 57 -->
-        <div class="question">
-            <h3>57. Qual prática do ITIL é responsável por gerenciar eventos em um serviço?</h3>
-            <label><input type="radio" name="q57" value="1"> Gerenciamento de evento</label>
-            <label><input type="radio" name="q57" value="0"> Gerenciamento de incidente</label>
-            <label><input type="radio" name="q57" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q57" value="0"> Gerenciamento de mudança</label>
-        </div>
-
-        <!-- Question 58 -->
-        <div class="question">
-            <h3>58. Qual é o objetivo da prática de gerenciamento de conhecimento?</h3>
-            <label><input type="radio" name="q58" value="0"> Gerenciar o ciclo de vida de todos os problemas</label>
-            <label><input type="radio" name="q58" value="0"> Garantir que os níveis de desempenho acordados dos serviços sejam entregues aos clientes e usuários</label>
-            <label><input type="radio" name="q58" value="1"> Assegurar que a informação correta esteja disponível para tomada de decisões em toda a organização</label>
-            <label><input type="radio" name="q58" value="0"> Garantir que os riscos sejam adequadamente avaliados</label>
-        </div>
-
-        <!-- Question 59 -->
-        <div class="question">
-            <h3>59. Qual prática do ITIL visa melhorar continuamente a eficácia e a eficiência dos serviços e processos de TI?</h3>
-            <label><input type="radio" name="q59" value="0"> Gerenciamento de mudança</label>
-            <label><input type="radio" name="q59" value="1"> Melhoria contínua</label>
-            <label><input type="radio" name="q59" value="0"> Gerenciamento de problema</label>
-            <label><input type="radio" name="q59" value="0"> Gerenciamento de evento</label>
-        </div>
-
-        <!-- Question 60 -->
-        <div class="question">
-            <h3>60. Qual é o propósito da prática de gerenciamento de nível de serviço?</h3>
-            <label><input type="radio" name="q60" value="1"> Garantir que os níveis de desempenho acordados dos serviços sejam entregues aos clientes e usuários</label>
-            <label><input type="radio" name="q60" value="0"> Gerenciar o ciclo de vida de todos os problemas</label>
-            <label><input type="radio" name="q60" value="0"> Garantir que os ativos necessários sejam disponibilizados e usados de maneira eficaz e eficiente</label>
-            <label><input type="radio" name="q60" value="0"> Garantir que os riscos sejam adequadamente avaliados</label>
-        </div>
-        <!-- Add more questions similarly -->
-
-        <button type="button" onclick="submitQuiz()">Enviar</button>
+    <h1>ITIL Quiz</h1>
+    <form id="quizForm">
+        <label for="name">Enter your name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <div id="questions"></div>
+        <button type="submit">Submit</button>
     </form>
-
-    <div id="result" style="margin-top: 20px;"></div>
-
+    <div id="results"></div>
     <script>
-        function submitQuiz() {
-            var totalQuestions = 40; // Ajustar para o número total de perguntas
-            var correctAnswers = 0;
+        // Perguntas e respostas
+        const questions = [
+            { 
+                question: "Qual dos itens abaixo concede ao usuário acesso a um sistema?",
+                options: ["Requisição de serviço", "Acordo de serviço", "Consumo de serviço", "Provisão de serviço"],
+                answer: "Provisão de serviço"
+            },
+            // Adicione mais perguntas aqui
+            { 
+                question: "Qual princípio se concentra nos consumidores de serviço?",
+                options: ["Começar de onde você está", "Otimizar e automatizar", "Manter de forma simples", "Foco no valor"],
+                answer: "Foco no valor"
+            },
+            // Continue com as outras perguntas
+        ];
 
-            // Respostas corretas
-            var answers = {
-                q1: "1", // Segunda opção é correta
-                q2: "1", // Primeira opção é correta
-                q3: "1", // Quarta opção é correta
-                q4: "1", // Quarta opção é correta
-                q5: "1", // Primeira opção é correta
-                q6: "1", // Segunda opção é correta
-                q7: "1", // Terceira opção é correta
-                q8: "1", // Primeira opção é correta
-                q9: "1", 
-                q10: "1", 
-                q11: "1",
-                q12: "1",
-                q13: "1",
-                q14: "1",
-                q15: "1",
-                q16: "1",
-                q17: "1",
-                q18: "1",
-                q19: "1",
-                q20: "1",
-                q21: "1",
-                q22: "1",
-                q23: "1",
-                q24: "1",
-                q25: "1",
-                q26: "1",
-                q27: "1",
-                q28: "1",
-                q29: "1",
-                q30: "1",
-                q31: "1",
-                q32: "1",
-                q33: "1",
-                q34: "1",
-                q35: "1",
-                q36: "1",
-                q37: "1",
-                q38: "1",
-                q39: "1",
-                q40: "1",
-                q41: "1",
-                q42: "1",
-                q43: "1",
-                q44: "1",
-                q45: "1",
-                q46: "1",
-                q47: "1",
-                q48: "1",
-                q49: "1",
-                q50: "1",
-                q51: "1",
-                q52: "1",
-                q53: "1",
-                q54: "1",
-                q55: "1",
-                q56: "1",
-                q57: "1",
-                q58: "1",
-                q59: "1",
-                q60: "1",
-            
-                // Adicione mais respostas aqui
-            };
-
-            for (var question in answers) {
-                var radios = document.getElementsByName(question);
-                for (var i = 0, length = radios.length; i < length; i++) {
-                    if (radios[i].checked && radios[i].value === answers[question]) {
-                        correctAnswers++;
-                    }
-                }
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
             }
+        }
 
-            var score = (correctAnswers / totalQuestions) * 100;
-            var result = document.getElementById("result");
-            if (correctAnswers >= 26) {
-                result.innerHTML = "Você passou! Acertos: " + correctAnswers + "/" + totalQuestions + " (" + score.toFixed(2) + "%)";
+        // Embaralha as perguntas e seleciona 40
+        shuffle(questions);
+        const selectedQuestions = questions.slice(0, 40);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const questionsDiv = document.getElementById('questions');
+            selectedQuestions.forEach((q, index) => {
+                const questionHTML = `
+                    <div class="question">
+                        <p>${q.question}</p>
+                        ${q.options.map(option => `
+                            <label>
+                                <input type="radio" name="q${index}" value="${option}">
+                                ${option}
+                            </label>
+                        `).join('<br>')}
+                    </div>
+                `;
+                questionsDiv.innerHTML += questionHTML;
+            });
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', event => {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const answers = Array.from(document.querySelectorAll('[name^="q"]'))
+                                  .filter(input => input.checked)
+                                  .map(input => input.value);
+
+            const score = calculateScore(answers);
+            const passingScore = 26;
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `<p>${name}, você acertou ${score} de ${selectedQuestions.length} perguntas.</p>`;
+
+            if (score >= passingScore) {
+                resultsDiv.innerHTML += `<p>Parabéns! Você passou na prova!</p>`;
             } else {
-                result.innerHTML = "Você não passou. Acertos: " + correctAnswers + "/" + totalQuestions + " (" + score.toFixed(2) + "%)";
+                resultsDiv.innerHTML += `<p>Você não passou. Continue praticando!</p>`;
             }
+        });
+
+        function calculateScore(answers) {
+            let score = 0;
+            selectedQuestions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selectedOption && selectedOption.value === q.answer) {
+                    score++;
+                }
+            });
+            return score;
         }
     </script>
 </body>
