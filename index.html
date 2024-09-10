@@ -108,28 +108,30 @@
                                   .filter(input => input.checked)
                                   .map(input => input.value);
 
-            const score = calculateScore(answers);
-            const passingScore = 26;
-
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = `<p>${name}, você acertou ${score} de ${selectedQuestions.length} perguntas.</p>`;
-
-            if (score >= passingScore) {
-                resultsDiv.innerHTML += `<p>Parabéns! Você passou na prova!</p>`;
-            } else {
-                resultsDiv.innerHTML += `<p>Você não passou. Continue praticando!</p>`;
-            }
+            const result = calculateResults(answers);
+            displayResults(name, result);
         });
 
-        function calculateScore(answers) {
+        function calculateResults(answers) {
             let score = 0;
+            let wrong = 0;
             selectedQuestions.forEach((q, index) => {
                 const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
                 if (selectedOption && selectedOption.value === q.answer) {
                     score++;
+                } else {
+                    wrong++;
                 }
             });
-            return score;
+            return { score, wrong };
+        }
+
+        function displayResults(name, { score, wrong }) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <p>${name}, você acertou ${score} de ${selectedQuestions.length} perguntas e errou ${wrong}.</p>
+                ${score >= 26 ? '<p>Parabéns! Você passou na prova!</p>' : '<p>Você não passou. Continue praticando!</p>'}
+            `;
         }
     </script>
 </body>
