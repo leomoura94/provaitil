@@ -1,572 +1,72 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz</title>
+    <title>ITIL v4 Practice Test</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        #quiz {
-            width: 80%;
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .question {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-        .answers {
-            list-style-type: none;
-            padding: 0;
-        }
-        .answer {
-            padding: 10px;
-            border: 1px solid #ddd;
-            margin-bottom: 5px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        .answer.correct {
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-        }
-        .answer.incorrect {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-        }
-        .answer.correct-review {
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-        }
-        .answer.incorrect-review {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-        }
-        .button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .button:hover {
-            background-color: #0056b3;
-        }
-        .result, .review {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-        #restart, #next, #review {
-            display: none;
-        }
-        .review-mode .answer {
-            cursor: default;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .question { margin-bottom: 20px; }
+        .question h3 { margin-bottom: 10px; }
+        .question label { display: block; }
+        button { margin-top: 20px; }
     </style>
 </head>
 <body>
-    <div id="quiz"></div>
-    <button id="next" class="button">Próxima Pergunta</button>
-    <button id="restart" class="button">Reiniciar Quiz</button>
-    <button id="review" class="button">Revisar Perguntas</button>
+    <h1>ITIL v4 Practice Test</h1>
+    <form id="quiz-form">
+        <!-- Question 1 -->
+        <div class="question">
+            <h3>1. O que é gestão de incidentes no ITIL v4?</h3>
+            <label><input type="radio" name="q1" value="0"> Identificação e análise de problemas</label>
+            <label><input type="radio" name="q1" value="1"> Restauração rápida do serviço - certa</label>
+            <label><input type="radio" name="q1" value="0"> Monitoramento de desempenho de serviços</label>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question">
+            <h3>2. Qual é o objetivo da gestão de mudanças no ITIL v4?</h3>
+            <label><input type="radio" name="q2" value="1"> Gerenciar mudanças com impacto mínimo - certa</label>
+            <label><input type="radio" name="q2" value="0"> Implementar novos serviços rapidamente</label>
+            <label><input type="radio" name="q2" value="0"> Reduzir incidentes de segurança</label>
+        </div>
+
+        <!-- Add more questions similarly -->
+
+        <button type="button" onclick="submitQuiz()">Enviar</button>
+    </form>
+
+    <div id="result" style="margin-top: 20px;"></div>
+
     <script>
-        const questions = [
-            {
-                question: "Como os sete princípios orientadores devem ser combinados quando uma organização precisa tomar uma decisão?",
-                answers: [
-                    { text: "Aplicar todos os princípios orientadores igualmente ao tomar qualquer decisão", correct: false },
-                    { text: "Aplicar um ou dois princípios orientadores mais relevantes à decisão específica", correct: false },
-                    { text: "Aplicar o princípio “Foco no Valor” e mais um ou dois mais relevantes à decisão específica", correct: false },
-                    { text: "Revisar cada princípio orientador para decidir a relevância em relação à decisão específica.", correct: true }
-                ]
-            },
-            {
-                question: "Que princípio orientador ITIL recomenda o uso de serviços, processos e ferramentas existentes para melhorar o serviço?",
-                answers: [
-                    { text: "Progredir Iterativamente com feedback", correct: false },
-                    { text: "Manter de forma simples e prática", correct: false },
-                    { text: "Começar de onde você está", correct: true },
-                    { text: "Foco no valor", correct: false }
-                ]
-            },
-            {
-                question: "Qual das opções a seguir é a abordagem CORRETA referente à autorização de mudança?",
-                answers: [
-                    { text: "As mudanças incluídas no calendário de mudanças são pré autorizadas e não precisam de autorização adicional", correct: false },
-                    { text: "As mudanças normais devem ser avaliadas e autorizadas antes de implantadas", correct: true },
-                    { text: "As mudanças emergenciais devem ser autorizadas pelo número máximo de pessoas possível, para reduzir o risco", correct: false },
-                    { text: "As mudanças normais, tipicamente, são implementadas como requisições de serviços e autorizadas pela central de serviços", correct: false }
-                ]
-            },
-            {
-                question: "Qual é o principal uso de um calendário de mudanças?",
-                answers: [
-                    { text: "ajudar a planejar autorizar e programar mudanças emergenciais", correct: false },
-                    { text: "publicar uma lista de requisições de serviço que os usuários podem selecionar", correct: false },
-                    { text: "garantir que uma única autoridade de mudança revise todas as mudanças", correct: false },
-                    { text: "ajudar a planejar mudanças auxiliar na comunicação e evitar conflitos", correct: true }
-                ]
-            },
-            {
-                question: "Quais partes interessadas colaboram na criação de valor em um relacionamento de serviço?",
-                answers: [
-                    { text: "Investidor e fornecedor", correct: false },
-                    { text: "consumidor e provedor", correct: true },
-                    { text: "provedor e fornecedor", correct: false },
-                    { text: "investidor e consumidor", correct: false }
-                ]
-            },
-            {
-                question: "O que pode ajudar a diminuir a resistência a uma melhoria planejada na aplicação do princípio orientador colaborar e promover visibilidade?",
-                answers: [
-                    { text: "restringir as informações sobre a melhoria somente as partes interessadas essenciais", correct: false },
-                    { text: "aumentar a colaboração e a visibilidade da melhoria", correct: true },
-                    { text: "envolver os clientes após o término de todo o planejamento", correct: false },
-                    { text: "envolver cada grupo de partes interessadas igualmente com a mesma comunicação", correct: false }
-                ]
-            },
-            {
-                question: "O que é utilidade?",
-                answers: [
-                    { text: "funcionalidade oferecida por um serviço para atender a uma necessidade específica", correct: true },
-                    { text: "confirmação de que um serviço atenderá aos requisitos acordados", correct: false },
-                    { text: "quantia em dinheiro gasta em uma determinada atividade ou recurso", correct: false },
-                    { text: "benefícios, utilidade e importância percebidos em algo", correct: false }
-                ]
-            },
-            {
-                question: "Qual dessas atividades realizadas como parte do gerenciamento de problemas?",
-                answers: [
-                    { text: "criação de registro de incidente", correct: false },
-                    { text: "diagnóstico e solução de incidentes", correct: false },
-                    { text: "escalada incidentes para a resolução por uma equipe de suporte", correct: false },
-                    { text: "análise de tendência dos registros de incidente", correct: true }
-                ]
-            },
-            {
-                question: "O que ajuda a diagnosticar e resolver um incidente simples?",
-                answers: [
-                    { text: "Escalada rápida", correct: false },
-                    { text: "formação de uma equipe e temporária", correct: false },
-                    { text: "uso de roteiros", correct: true },
-                    { text: "priorização dos problemas", correct: false }
-                ]
-            },
-            {
-                question: "Qual das opções a seguir abrange governança práticas de gerenciamento e melhoria continua?",
-                answers: [
-                    { text: "o sistema de valor de serviço", correct: true },
-                    { text: "a atividade de cadeia de valor de entrega e suporte", correct: false },
-                    { text: "o princípio orientador foco no valor", correct: false },
-                    { text: "a dimensão fluxo de valor e processos", correct: false }
-                ]
-            },
-            {
-                question: "Que prática envolve o gerenciamento de vulnerabilidades que foram analisadas mas não resolvidas?",
-                answers: [
-                    { text: "habilitação de mudança", correct: false },
-                    { text: "gerenciamento de requisição de serviço", correct: false },
-                    { text: "gerenciamento de problema", correct: true },
-                    { text: "gerenciamento de nível de serviço", correct: false }
-                ]
-            },
-            {
-                question: "“O propósito da prática de gerenciamento de fornecedor a garantir que os fornecedores da organização e o _______ deles sejam gerenciados adequadamente para oferecer suporte a produtos e serviços de qualidade continua”.",
-                answers: [
-                    { text: "Custo", correct: false },
-                    { text: "Usuário", correct: false },
-                    { text: "Valor", correct: false },
-                    { text: "Desempenho", correct: true }
-                ]
-            },
-            {
-                question: "Qual das opções a seguir deve ser considerada parte da dimensão parceiros e fornecedores?",
-                answers: [
-                    { text: "O nível de integração e de informalidade envolvido nos relacionamentos entre as organizações", correct: true },
-                    { text: "as atividades, fluxo de trabalho, controles e procedimentos necessários para atingir os objetivos acordados", correct: false },
-                    { text: "as informações criadas, gerenciadas e usadas durante a provisão e o consumo de serviço", correct: false },
-                    { text: "as qualificações e competências requeridas das equipes e dos membros individuais da organização", correct: false }
-                ]
-            },
-            {
-                question: "“um usuário é _______ quem usa os serviços”",
-                answers: [
-                    { text: "Uma organização", correct: false },
-                    { text: "Um papel", correct: true },
-                    { text: "Uma equipe", correct: false },
-                    { text: "Um fornecedor", correct: false }
-                ]
-            },
-            {
-                question: "Qual das atividades a seguir é realizada durante a etapa \"chegamos lá?\" do modelo de melhoria contínua?",
-                answers: [
-                    { text: "definição de metas mensuráveis", correct: false },
-                    { text: "comunicação de resultados e aprendizado", correct: true },
-                    { text: "documentação de melhorias implementadas", correct: false },
-                    { text: "realização de uma revisão pós-implementação", correct: false }
-                ]
-            },
-            {
-                question: "Qual a principal vantagem da prática de gerenciamento de nível de serviço?",
-                answers: [
-                    { text: "oferecer uma abordagem formal para a resolução de incidentes", correct: false },
-                    { text: "garantir a conformidade com os contratos de serviço", correct: false },
-                    { text: "ajudar a garantir que as necessidades e expectativas dos clientes sejam compreendidas e atendidas", correct: true },
-                    { text: "garantir o fornecimento de recursos adequados para os serviços", correct: false }
-                ]
-            },
-            {
-                question: "Qual das opções a seguir é uma prática recomendada no gerenciamento de mudança?",
-                answers: [
-                    { text: "Permitir que todas as mudanças sejam programadas", correct: false },
-                    { text: "Evitar mudanças emergenciais sempre que possível", correct: true },
-                    { text: "Autorizar mudanças sem avaliação", correct: false },
-                    { text: "Delegar o gerenciamento de mudanças somente ao departamento de TI", correct: false }
-                ]
-            },
-            {
-                question: "O que é essencial para a criação e gerenciamento de um catálogo de serviço?",
-                answers: [
-                    { text: "Definir claramente todos os serviços fornecidos pela organização e seus acordos de nível", correct: true },
-                    { text: "Criar uma lista de todos os recursos e equipamentos utilizados pelos serviços", correct: false },
-                    { text: "Documentar todas as políticas e procedimentos de TI", correct: false },
-                    { text: "Gerenciar o ciclo de vida dos incidentes e problemas", correct: false }
-                ]
-            },
-            {
-                question: "Qual é a principal função da prática de gerenciamento de configuração?",
-                answers: [
-                    { text: "Manter a integridade e a precisão das informações sobre os itens de configuração", correct: true },
-                    { text: "Gerenciar os níveis de serviço e assegurar a conformidade com os contratos", correct: false },
-                    { text: "Gerenciar a disponibilidade e o desempenho dos serviços", correct: false },
-                    { text: "Garantir que todas as mudanças sejam registradas e autorizadas", correct: false }
-                ]
-            },
-            {
-                question: "Qual é o objetivo principal da prática de gerenciamento de capacidade?",
-                answers: [
-                    { text: "Garantir que os serviços atendam às necessidades acordadas dos clientes e usuários", correct: true },
-                    { text: "Gerenciar os incidentes e problemas para restaurar o serviço rapidamente", correct: false },
-                    { text: "Definir e gerenciar acordos de nível de serviço", correct: false },
-                    { text: "Controlar e otimizar os custos relacionados aos recursos de TI", correct: false }
-                ]
-            },
-            {
-                question: "Qual das práticas a seguir é usada para gerenciar e resolver incidentes e problemas?",
-                answers: [
-                    { text: "Gerenciamento de Disponibilidade", correct: false },
-                    { text: "Gerenciamento de Mudanças", correct: false },
-                    { text: "Gerenciamento de Incidentes", correct: false },
-                    { text: "Gerenciamento de Problemas", correct: true }
-                ]
-            },
-            {
-                question: "Qual é a principal função da prática de gerenciamento de continuidade de serviço?",
-                answers: [
-                    { text: "Garantir que os serviços de TI possam ser restaurados rapidamente após uma interrupção", correct: true },
-                    { text: "Gerenciar a configuração e a integridade dos itens de configuração", correct: false },
-                    { text: "Asegurar que os níveis de serviço sejam mantidos e cumpridos", correct: false },
-                    { text: "Gerenciar e resolver problemas e incidentes", correct: false }
-                ]
-            },
-            {
-                question: "Qual a função principal do gerenciamento de acesso?",
-                answers: [
-                    { text: "Garantir que os usuários tenham acesso aos serviços e informações necessárias", correct: true },
-                    { text: "Gerenciar e controlar as mudanças nos serviços de TI", correct: false },
-                    { text: "Garantir a disponibilidade contínua dos serviços", correct: false },
-                    { text: "Gerenciar e resolver problemas e incidentes", correct: false }
-                ]
-            },
-            {
-                question: "Qual é o propósito da prática de gerenciamento de incidentes?",
-                answers: [
-                    { text: "Restaurar o serviço para os usuários o mais rápido possível", correct: true },
-                    { text: "Gerenciar a configuração e a integridade dos itens de configuração", correct: false },
-                    { text: "Garantir que os serviços de TI atendam às necessidades dos clientes", correct: false },
-                    { text: "Gerenciar e controlar as mudanças nos serviços de TI", correct: false }
-                ]
-            },
-            {
-                question: "Qual é o propósito da prática de gerenciamento de problemas?",
-                answers: [
-                    { text: "Prevenir a ocorrência de incidentes", correct: true },
-                    { text: "Gerenciar o acesso aos serviços e informações", correct: false },
-                    { text: "Garantir a continuidade dos serviços em caso de interrupção", correct: false },
-                    { text: "Restaurar o serviço para os usuários o mais rápido possível", correct: false }
-                ]
-            },
-            {
-                question: "Qual é a finalidade do gerenciamento de nível de serviço?",
-                answers: [
-                    { text: "Garantir que as expectativas e necessidades dos clientes sejam compreendidas e atendidas", correct: true },
-                    { text: "Gerenciar a continuidade dos serviços em caso de interrupção", correct: false },
-                    { text: "Restaurar o serviço para os usuários o mais rápido possível", correct: false },
-                    { text: "Gerenciar e resolver problemas e incidentes", correct: false }
-                ]
-            },
-            {
-                question: "Qual é a principal função da prática de gerenciamento de mudanças?",
-                answers: [
-                    { text: "Garantir que todas as mudanças sejam autorizadas e registradas", correct: true },
-                    { text: "Gerenciar a configuração e a integridade dos itens de configuração", correct: false },
-                    { text: "Garantir que os serviços atendam às necessidades acordadas dos clientes e usuários", correct: false },
-                    { text: "Restaurar o serviço para os usuários o mais rápido possível", correct: false }
-                ]
-            },
-            {
-                question: "Qual é o propósito da prática de gerenciamento de conhecimento?",
-                answers: [
-                    { text: "Garantir que o conhecimento esteja disponível para os usuários e equipes de suporte", correct: true },
-                    { text: "Gerenciar a configuração e a integridade dos itens de configuração", correct: false },
-                    { text: "Garantir a continuidade dos serviços em caso de interrupção", correct: false },
-                    { text: "Restaurar o serviço para os usuários o mais rápido possível", correct: false }
-                ]
-            },
-            {
-                question: "Qual das práticas a seguir envolve o gerenciamento da disponibilidade dos serviços de TI?",
-                answers: [
-                    { text: "Gerenciamento de Disponibilidade", correct: true },
-                    { text: "Gerenciamento de Mudanças", correct: false },
-                    { text: "Gerenciamento de Incidentes", correct: false },
-                    { text: "Gerenciamento de Problemas", correct: false }
-                ]
-            },
-            {
-                question: "Qual é a principal função da prática de gerenciamento de capacidade?",
-                answers: [
-                    { text: "Garantir que os serviços atendam às necessidades e expectativas acordadas dos clientes", correct: true },
-                    { text: "Gerenciar e resolver problemas e incidentes", correct: false },
-                    { text: "Garantir a disponibilidade contínua dos serviços", correct: false },
-                    { text: "Gerenciar e controlar as mudanças nos serviços de TI", correct: false }
-                ]
-            },
-            {
-                question: "Qual é o propósito da prática de gerenciamento de continuidade de serviço?",
-                answers: [
-                    { text: "Garantir que os serviços de TI possam ser restaurados rapidamente após uma interrupção", correct: true },
-                    { text: "Gerenciar e controlar as mudanças nos serviços de TI", correct: false },
-                    { text: "Garantir que os níveis de serviço sejam mantidos e cumpridos", correct: false },
-                    { text: "Gerenciar a configuração e a integridade dos itens de configuração", correct: false }
-                ]
-            },
-            {
-                question: "Qual é a função principal da prática de gerenciamento de acesso?",
-                answers: [
-                    { text: "Garantir que os usuários tenham acesso aos serviços e informações necessárias", correct: true },
-                    { text: "Gerenciar a configuração e a integridade dos itens de configuração", correct: false },
-                    { text: "Garantir a disponibilidade contínua dos serviços", correct: false },
-                    { text: "Gerenciar e resolver problemas e incidentes", correct: false }
-                ]
-            },
-            {
-                question: "Qual é o propósito da prática de gerenciamento de incidentes?",
-                answers: [
-                    { text: "Restaurar o serviço para os usuários o mais rápido possível", correct: true },
-                    { text: "Gerenciar a configuração e a integridade dos itens de configuração", correct: false },
-                    { text: "Garantir que os serviços de TI atendam às necessidades dos clientes", correct: false },
-                    { text: "Gerenciar e controlar as mudanças nos serviços de TI", correct: false }
-                ]
-            },
-            {
-                question: "Qual é o propósito da prática de gerenciamento de problemas?",
-                answers: [
-                    { text: "Prevenir a ocorrência de incidentes", correct: true },
-                    { text: "Gerenciar o acesso aos serviços e informações", correct: false },
-                    { text: "Garantir a continuidade dos serviços em caso de interrupção", correct: false },
-                    { text: "Restaurar o serviço para os usuários o mais rápido possível", correct: false }
-                ]
-            },
-            {
-                question: "Qual é a finalidade do gerenciamento de nível de serviço?",
-                answers: [
-                    { text: "Garantir que as expectativas e necessidades dos clientes sejam compreendidas e atendidas", correct: true },
-                    { text: "Gerenciar a continuidade dos serviços em caso de interrupção", correct: false },
-                    { text: "Restaurar o serviço para os usuários o mais rápido possível", correct: false },
-                    { text: "Gerenciar e resolver problemas e incidentes", correct: false }
-                ]
-            },
-            {
-                question: "Qual é a principal função da prática de gerenciamento de mudanças?",
-                answers: [
-                    { text: "Garantir que todas as mudanças sejam autorizadas e registradas", correct: true },
-                    { text: "Gerenciar a configuração e a integridade dos itens de configuração", correct: false },
-                    { text: "Garantir que os serviços atendam às necessidades acordadas dos clientes e usuários", correct: false },
-                    { text: "Restaurar o serviço para os usuários o mais rápido possível", correct: false }
-                ]
-            },
-            {
-                question: "Qual é o propósito da prática de gerenciamento de conhecimento?",
-                answers: [
-                    { text: "Garantir que o conhecimento esteja disponível para os usuários e equipes de suporte", correct: true },
-                    { text: "Gerenciar a configuração e a integridade dos itens de configuração", correct: false },
-                    { text: "Garantir a continuidade dos serviços em caso de interrupção", correct: false },
-                    { text: "Restaurar o serviço para os usuários o mais rápido possível", correct: false }
-                ]
-            },
-            
-            {
-                question: "Qual dos itens abaixo concede ao usuário acesso a um sistema?",
-                answers: [
-                    { text: "Requisição de serviço", correct: false },
-                    { text: "Acordo de serviço", correct: false },
-                    { text: "Consumo de serviço", correct: false },
-                    { text: "Provisão de serviço", correct: true }
-                ]
-            },
-        {
-                question: "Qual princípio se concentra nos consumidores de serviço?",
-                answers: [
-                    { text: "Começar de onde você está", correct: false },
-                    { text: "Otimizar e automatizar", correct: false },
-                    { text: " Manter de forma simples", correct: false },
-                    { text: "Foco no valor", correct: true }
-                ]
-            },
-          {
-                question: "O que é importante para um registro de melhoria contínua (RCM)?",
-                answers: [
-                    { text: "As ideias de melhoria são documentadas, avaliadas e priorizadas.", correct: true },
-                    { text: "As ideias de melhoria de várias fontes são mantidas em um único RCM. ", correct: false },
-                    { text: "As ideias de melhoria que não são imediatamente executadas são removidas ao RCM. ", correct: false },
-                    { text: " As ideias de melhoria são testadas, financiadas e acordadas.", correct: false }
-                ]
-            }
-        ];
+        function submitQuiz() {
+            var totalQuestions = 40; // Ajustar para o número total de perguntas
+            var correctAnswers = 0;
 
-    let currentQuestionIndex = 0;
-        let shuffledQuestions = [];
-        let answers = []; // Para armazenar respostas do usuário
+            // Respostas corretas
+            var answers = {
+                q1: "1", // Segunda opção é correta
+                q2: "1", // Primeira opção é correta
+                // Adicione mais respostas aqui
+            };
 
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-
-        function showQuestion(question) {
-            const quizDiv = document.getElementById('quiz');
-            quizDiv.innerHTML = `
-                <div class="question">${question.question}</div>
-                <ul class="answers">
-                    ${question.answers.map((answer, index) => `
-                        <li class="answer" data-index="${index}" data-correct="${answer.correct}">${answer.text}</li>
-                    `).join('')}
-                </ul>
-            `;
-        }
-
-        function handleAnswerClick(event) {
-            if (event.target.classList.contains('answer')) {
-                const isCorrect = event.target.getAttribute('data-correct') === 'true';
-                const index = event.target.getAttribute('data-index');
-                
-                answers[currentQuestionIndex] = { index, isCorrect };
-
-                const allAnswers = document.querySelectorAll('.answer');
-                allAnswers.forEach(answer => {
-                    if (answer.getAttribute('data-correct') === 'true') {
-                        answer.classList.add('correct');
-                    } else {
-                        answer.classList.add('incorrect');
+            for (var question in answers) {
+                var radios = document.getElementsByName(question);
+                for (var i = 0, length = radios.length; i < length; i++) {
+                    if (radios[i].checked && radios[i].value === answers[question]) {
+                        correctAnswers++;
                     }
-                    answer.removeEventListener('click', handleAnswerClick);
-                });
-
-                if (isCorrect) {
-                    event.target.classList.add('correct');
-                } else {
-                    event.target.classList.add('incorrect');
                 }
-
-                document.getElementById('next').style.display = 'block';
-                document.getElementById('review').style.display = 'none';
             }
-        }
 
-        function showResult() {
-            const quizDiv = document.getElementById('quiz');
-            quizDiv.innerHTML = `<div class="result">Fim do Quiz! Clique em "Reiniciar Quiz" para jogar novamente ou "Revisar Perguntas" para ver as respostas.</div>`;
-            document.getElementById('restart').style.display = 'block';
-            document.getElementById('review').style.display = 'block';
-        }
-
-        function restartQuiz() {
-            currentQuestionIndex = 0;
-            shuffleArray(questions);
-            shuffledQuestions = [...questions];
-            answers = [];
-            showQuestion(shuffledQuestions[currentQuestionIndex]);
-            document.getElementById('restart').style.display = 'none';
-            document.getElementById('next').style.display = 'block';
-            document.getElementById('review').style.display = 'none';
-        }
-
-        function showReview() {
-            let correctAnswersCount = 0;
-            let incorrectAnswersCount = 0;
-
-            const quizDiv = document.getElementById('quiz');
-            quizDiv.innerHTML = `
-                <div class="review">
-                    ${shuffledQuestions.map((question, index) => {
-                        const userAnswer = answers[index];
-                        const answerClass = (userAnswer && !userAnswer.isCorrect) ? 'incorrect-review' : '';
-                        correctAnswersCount += (userAnswer && userAnswer.isCorrect) ? 1 : 0;
-                        incorrectAnswersCount += (userAnswer && !userAnswer.isCorrect) ? 1 : 0;
-
-                        return `
-                            <div class="question">${question.question}</div>
-                            <ul class="answers">
-                                ${question.answers.map((answer, i) => `
-                                    <li class="answer ${userAnswer && userAnswer.index == i ? (answer.correct ? 'correct-review' : 'incorrect-review') : ''}" data-index="${i}">
-                                        ${answer.text}
-                                    </li>
-                                `).join('')}
-                            </ul>
-                        `;
-                    }).join('')}
-                </div>
-                <div class="result">
-                    Total de Perguntas: ${shuffledQuestions.length}<br>
-                    Acertos: ${correctAnswersCount}<br>
-                    Erros: ${incorrectAnswersCount}
-                </div>
-            `;
-            document.querySelector('#quiz').classList.add('review-mode');
-            document.getElementById('next').style.display = 'none';
-            document.getElementById('review').style.display = 'none';
-        }
-
-        function handleNextClick() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < shuffledQuestions.length) {
-                showQuestion(shuffledQuestions[currentQuestionIndex]);
+            var score = (correctAnswers / totalQuestions) * 100;
+            var result = document.getElementById("result");
+            if (correctAnswers >= 26) {
+                result.innerHTML = "Você passou! Acertos: " + correctAnswers + "/" + totalQuestions + " (" + score.toFixed(2) + "%)";
             } else {
-                showResult();
+                result.innerHTML = "Você não passou. Acertos: " + correctAnswers + "/" + totalQuestions + " (" + score.toFixed(2) + "%)";
             }
         }
-
-        document.getElementById('next').addEventListener('click', handleNextClick);
-        document.getElementById('restart').addEventListener('click', restartQuiz);
-        document.getElementById('review').addEventListener('click', showReview);
-
-        // Iniciar o quiz ao carregar a página
-        shuffleArray(questions);
-        shuffledQuestions = [...questions];
-        showQuestion(shuffledQuestions[currentQuestionIndex]);
-        document.querySelector('#quiz').addEventListener('click', handleAnswerClick);
     </script>
 </body>
 </html>
