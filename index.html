@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Simulado ITIL V4</title>
   <style>
     body {
@@ -37,14 +37,18 @@
     .alternativa:hover {
       background-color: #d0d0d0;
     }
-    .selecionada {
-      background-color: #d0e7ff !important;
-    }
     .correta {
       background-color: #a5f7a5 !important;
     }
     .errada {
       background-color: #f7a5a5 !important;
+    }
+    .selecionada {
+      background-color: #d0e7ff !important;
+    }
+    .disabled {
+      pointer-events: none;
+      opacity: 0.6;
     }
     #nextBtn {
       background-color: #007bff;
@@ -54,13 +58,19 @@
       background-color: #999;
       cursor: not-allowed;
     }
+    #finalBtns {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    #finalBtns button {
+      flex: 1;
+    }
   </style>
 </head>
 <body>
   <h1>Simulado ITIL V4</h1>
-  <div id="app">
-    Carregando perguntas...
-  </div>
+  <div id="app">Carregando perguntas...</div>
 
   <script>
     const perguntas = [
@@ -125,51 +135,54 @@
             <li><button onclick="selecionar(${i})" class="alternativa">${alt}</button></li>
           `).join('')}
         </ul>
-        <button id="nextBtn" onclick="proxima()" disabled>Next</button>
+        <button id="nextBtn" onclick="proxima()" disabled>Próxima</button>
       `;
     }
 
     function selecionar(i) {
-      selecionada = i;
-      document.querySelectorAll('.alternativa').forEach((btn, idx) => {
-        btn.classList.remove('selecionada');
-        if (idx === i) btn.classList.add('selecionada');
-      });
-      document.getElementById('nextBtn').disabled = false;
-    }
-
-    function proxima() {
       const correta = perguntas[indice].correta;
       const botoes = document.querySelectorAll('.alternativa');
 
-      botoes.forEach((btn, i) => {
+      botoes.forEach((btn, idx) => {
         btn.disabled = true;
-        if (i === correta) {
+        if (idx === correta) {
           btn.classList.add('correta');
         }
-        if (i === selecionada && selecionada !== correta) {
+        if (idx === i && i !== correta) {
           btn.classList.add('errada');
         }
       });
 
-      if (selecionada === correta) pontuacao++;
+      if (i === correta) pontuacao++;
+      document.getElementById('nextBtn').disabled = false;
+    }
 
-      document.getElementById('nextBtn').disabled = true;
-      setTimeout(() => {
-        indice++;
-        if (indice < perguntas.length) {
-          mostrarPergunta();
-        } else {
-          mostrarResultado();
-        }
-      }, 1500);
+    function proxima() {
+      indice++;
+      if (indice < perguntas.length) {
+        mostrarPergunta();
+      } else {
+        mostrarResultado();
+      }
     }
 
     function mostrarResultado() {
-      document.getElementById('app').innerHTML = `
-        <h2>Resultado Final</h2>
+      const app = document.getElementById('app');
+      app.innerHTML = `
+        <h2>Simulado finalizado!</h2>
         <p>Você acertou <strong>${pontuacao}</strong> de <strong>${perguntas.length}</strong> perguntas.</p>
+        <div id="finalBtns">
+          <button onclick="reiniciar()">Reiniciar</button>
+          <button onclick="alert('Simulado concluído!')">Concluir</button>
+        </div>
       `;
+    }
+
+    function reiniciar() {
+      indice = 0;
+      pontuacao = 0;
+      perguntas.sort(() => Math.random() - 0.5);
+      mostrarPergunta();
     }
 
     mostrarPergunta();
