@@ -84,14 +84,14 @@
     <div id="questionContainer"></div>
 
     <div id="navigation">
-      <button type="button" id="prevBtn" onclick="restartQuiz()">Reiniciar</button>
+      <button type="button" id="prevBtn" class="hidden" onclick="restartQuiz()">Reiniciar</button>
       <button type="button" id="nextBtn" onclick="nextQuestion()">Próximo</button>
       <button type="submit" id="submitBtn" class="hidden">Concluir</button>
     </div>
   </form>
 
   <div id="results"></div>
-  
+
   <script>
     const originalQuestions = [
      { 
@@ -902,12 +902,15 @@ let questions = [];
         </ul>
       `;
 
+      // Controle dos botões
       if (currentQuestion === questions.length - 1) {
         nextBtn.classList.add('hidden');
         submitBtn.classList.remove('hidden');
+        prevBtn.classList.remove('hidden');
       } else {
         nextBtn.classList.remove('hidden');
         submitBtn.classList.add('hidden');
+        prevBtn.classList.add('hidden');
       }
     }
 
@@ -944,7 +947,7 @@ let questions = [];
       currentQuestion = 0;
       userAnswers = [];
       resultsContainer.innerHTML = '';
-      questions = JSON.parse(JSON.stringify(originalQuestions)); // Cria uma cópia das perguntas
+      questions = JSON.parse(JSON.stringify(originalQuestions));
       shuffle(questions);
       renderQuestion();
     }
