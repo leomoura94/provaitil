@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Simulado ITIL V4</title>
 <style>
   body {
@@ -36,9 +36,6 @@
   .options button:hover {
     background-color: #d0d0d0;
   }
-  .selected {
-    background-color: #d0e7ff !important;
-  }
   .correct {
     background-color: #a5f7a5 !important;
   }
@@ -64,6 +61,9 @@
     background-color: red;
     width: 100%;
   }
+  button:disabled {
+    cursor: not-allowed;
+  }
 </style>
 </head>
 <body>
@@ -75,8 +75,8 @@
 <div id="quizContainer"></div>
 
 <div id="navigation">
-  <button id="nextBtn" class="nav">Próxima</button>
-  <button id="submitBtn" class="nav" style="display:none;">Concluir</button>
+  <button id="nextBtn" class="nav" disabled>Próxima</button>
+  <button id="submitBtn" class="nav" style="display:none;" disabled>Concluir</button>
 </div>
 
 <button id="restart" style="display:none;">Reiniciar</button>
@@ -884,6 +884,7 @@ function startQuiz() {
   restartBtn.style.display = 'none';
   submitBtn.style.display = 'none';
   nextBtn.style.display = 'block';
+  nextBtn.disabled = true; // desativa até resposta selecionada
   showQuestion();
 }
 
@@ -894,70 +895,66 @@ function showQuestion() {
       <p>${currentQuestion + 1}. ${q.question}</p>
       <div class="options">
         ${q.options.map(option => `
-          <button onclick="selectOption(this)">${option}</button>
+          <button onclick="selectOption(this)" type="button">${option}</button>
         `).join('')}
       </div>
     </div>
   `;
 
-  if (userAnswers[currentQuestion]) {
-    const buttons = quizContainer.querySelectorAll('button');
-    buttons.forEach(btn => {
-      if (btn.innerText === userAnswers[currentQuestion]) {
-        btn.classList.add('selected');
-      }
-    });
+  // Esconde ou mostra botões conforme posição
+  if(currentQuestion === questions.length -1){
+    nextBtn.style.display = 'none';
+    submitBtn.style.display = 'inline-block';
+    submitBtn.disabled = true;
+  } else {
+    nextBtn.style.display = 'inline-block';
+    nextBtn.disabled = true;
+    submitBtn.style.display = 'none';
   }
-
-  nextBtn.style.display = currentQuestion < questions.length -1 ? 'block' : 'none';
-  submitBtn.style.display = currentQuestion === questions.length -1 ? 'block' : 'none';
 }
 
 function selectOption(button) {
-  const buttons = button.parentNode.querySelectorAll('button');
-  buttons.forEach(btn => btn.classList.remove('selected'));
-  button.classList.add('selected');
-  userAnswers[currentQuestion] = button.innerText;
+  const q = questions[currentQuestion];
+  const buttons = quizContainer.querySelectorAll('button');
+  // Desabilita todos para não mudar resposta depois
+  buttons.forEach(btn => btn.disabled = true);
+
+  const selected = button.innerText;
+  userAnswers[currentQuestion] = selected;
+
+  if(selected === q.answer) {
+    button.classList.add('correct');
+    correctCount++;
+  } else {
+    button.classList.add('incorrect');
+    // Marca a correta em verde
+    buttons.forEach(btn => {
+      if(btn.innerText === q.answer) btn.classList.add('correct');
+    });
+  }
+
+  // Habilita o botão próximo ou concluir
+  if(currentQuestion === questions.length -1){
+    submitBtn.disabled = false;
+  } else {
+    nextBtn.disabled = false;
+  }
 }
 
 nextBtn.addEventListener('click', () => {
-  if (!userAnswers[currentQuestion]) {
-    alert('Por favor, selecione uma opção antes de prosseguir.');
-    return;
-  }
   currentQuestion++;
   showQuestion();
 });
 
 submitBtn.addEventListener('click', () => {
   const name = document.getElementById('name').value.trim();
-  if (!name) {
+  if(!name){
     alert('Por favor, preencha seu nome antes de concluir.');
     return;
   }
 
   quizContainer.innerHTML = '';
-  questions.forEach((q, index) => {
-    const userAnswer = userAnswers[index];
-    const isCorrect = userAnswer === q.answer;
-    if (isCorrect) correctCount++;
-
-    const div = document.createElement('div');
-    div.classList.add('question');
-    div.innerHTML = `
-      <p>${index + 1}. ${q.question}</p>
-      ${q.options.map(option => {
-        let cls = '';
-        if (option === q.answer) {
-          cls = 'correct';
-        } else if (option === userAnswer && option !== q.answer) {
-          cls = 'incorrect';
-        }
-        return `<button class="${cls}" disabled>${option}</button>`;
-      }).join('')}
-    `;
-    quizContainer.appendChild(div);
-  });
+  resultsContainer.innerHTML = '';
 
   const percentage = (correctCount / questions.length) * 100;
   const passed = percentage >= 70;
@@ -977,7 +974,7 @@ submitBtn.addEventListener('click', () => {
 
 restartBtn.addEventListener('click', startQuiz);
 
-// Inicializar
+// Inicia quiz ao carregar
 startQuiz();
 </script>
 
