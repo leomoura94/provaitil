@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 600px;
+      max-width: 700px;
       margin: 40px auto;
       padding: 20px;
       background-color: #f8f8f8;
@@ -880,6 +880,12 @@ let questions = [];
       }
     }
 
+    function pickRandom(array, count) {
+      const copy = [...array];
+      shuffle(copy);
+      return copy.slice(0, count);
+    }
+
     function renderQuestion() {
       const q = questions[currentQuestion];
       const shuffledOptions = [...q.options];
@@ -947,8 +953,7 @@ let questions = [];
       currentQuestion = 0;
       userAnswers = [];
       resultsContainer.innerHTML = '';
-      questions = JSON.parse(JSON.stringify(originalQuestions));
-      shuffle(questions);
+      questions = pickRandom(originalQuestions, Math.min(40, originalQuestions.length));
       renderQuestion();
     }
 
@@ -976,11 +981,19 @@ let questions = [];
       });
 
       resultHTML += `</ul><h3>Acertos: ${correctCount} de ${questions.length}</h3>`;
+
+      const percentage = (correctCount / questions.length) * 100;
+      if (percentage >= 70) {
+        resultHTML += `<h2 style="color: green;">🎉 Parabéns! Você foi APROVADO! 🎉</h2>`;
+      } else {
+        resultHTML += `<h2 style="color: red;">❌ Você NÃO foi aprovado. Estude mais e tente novamente.</h2>`;
+      }
+
       resultsContainer.innerHTML = resultHTML;
 
       setTimeout(() => {
         restartQuiz();
-      }, 3000);
+      }, 5000);
     }
 
     // Inicializa na primeira vez
