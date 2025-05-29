@@ -7,7 +7,7 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    max-width: 900px;
+    max-width: 600px;
     margin: 20px auto;
     padding: 20px;
     background-color: #f4f4f4;
@@ -21,9 +21,6 @@
     border-radius: 8px;
     margin-bottom: 20px;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
-  }
-  .question p {
-    font-weight: bold;
   }
   .options button {
     display: block;
@@ -53,18 +50,19 @@
     font-size: 18px;
     margin-top: 20px;
   }
-  button#submit, button#restart {
+  button.nav {
     background-color: #007bff;
     color: white;
-    padding: 12px;
-    width: 100%;
+    padding: 10px;
+    width: 49%;
     border: none;
     border-radius: 6px;
-    margin-top: 20px;
+    margin-top: 10px;
     cursor: pointer;
   }
   button#restart {
     background-color: red;
+    width: 100%;
   }
 </style>
 </head>
@@ -76,11 +74,14 @@
 
 <div id="quizContainer"></div>
 
-<button id="submit">Ver Resultado</button>
-<button id="restart" style="display:none;">Tentar Novamente</button>
+<div id="navigation">
+  <button id="nextBtn" class="nav">Próxima</button>
+  <button id="submitBtn" class="nav" style="display:none;">Concluir</button>
+</div>
+
+<button id="restart" style="display:none;">Reiniciar</button>
 
 <div id="results"></div>
-
 
   <script>
     const originalQuestions = [
@@ -853,13 +854,17 @@
     },
 
     ];
-      let questions = [];
+  
+let questions = [];
+let currentQuestion = 0;
 let userAnswers = {};
+let correctCount = 0;
 
 const quizContainer = document.getElementById('quizContainer');
 const resultsContainer = document.getElementById('results');
-const submitButton = document.getElementById('submit');
-const restartButton = document.getElementById('restart');
+const nextBtn = document.getElementById('nextBtn');
+const submitBtn = document.getElementById('submitBtn');
+const restartBtn = document.getElementById('restart');
 
 function shuffle(array) {
   for (let i = array.length -1; i > 0; i--) {
@@ -872,62 +877,86 @@ function startQuiz() {
   const selectedQuestions = originalQuestions.slice();
   shuffle(selectedQuestions);
   questions = selectedQuestions.slice(0, Math.min(40, selectedQuestions.length));
+  currentQuestion = 0;
   userAnswers = {};
-  quizContainer.innerHTML = '';
+  correctCount = 0;
   resultsContainer.innerHTML = '';
+  restartBtn.style.display = 'none';
+  submitBtn.style.display = 'none';
+  nextBtn.style.display = 'block';
+  showQuestion();
+}
 
-  questions.forEach((q, index) => {
-    const qDiv = document.createElement('div');
-    qDiv.classList.add('question');
-    qDiv.innerHTML = `
-      <p>${index + 1}. ${q.question}</p>
+function showQuestion() {
+  const q = questions[currentQuestion];
+  quizContainer.innerHTML = `
+    <div class="question">
+      <p>${currentQuestion + 1}. ${q.question}</p>
       <div class="options">
         ${q.options.map(option => `
-          <button onclick="selectOption(${index}, this)">${option}</button>
+          <button onclick="selectOption(this)">${option}</button>
         `).join('')}
       </div>
-    `;
-    quizContainer.appendChild(qDiv);
-  });
+    </div>
+  `;
 
-  submitButton.style.display = 'block';
-  restartButton.style.display = 'none';
+  if (userAnswers[currentQuestion]) {
+    const buttons = quizContainer.querySelectorAll('button');
+    buttons.forEach(btn => {
+      if (btn.innerText === userAnswers[currentQuestion]) {
+        btn.classList.add('selected');
+      }
+    });
+  }
+
+  nextBtn.style.display = currentQuestion < questions.length -1 ? 'block' : 'none';
+  submitBtn.style.display = currentQuestion === questions.length -1 ? 'block' : 'none';
 }
 
-function selectOption(questionIndex, button) {
-  const options = button.parentNode.querySelectorAll('button');
-  options.forEach(btn => btn.classList.remove('selected'));
+function selectOption(button) {
+  const buttons = button.parentNode.querySelectorAll('button');
+  buttons.forEach(btn => btn.classList.remove('selected'));
   button.classList.add('selected');
-  userAnswers[questionIndex] = button.innerText;
+  userAnswers[currentQuestion] = button.innerText;
 }
 
-submitButton.addEventListener('click', () => {
+nextBtn.addEventListener('click', () => {
+  if (!userAnswers[currentQuestion]) {
+    alert('Por favor, selecione uma opção antes de prosseguir.');
+    return;
+  }
+  currentQuestion++;
+  showQuestion();
+});
+
+submitBtn.addEventListener('click', () => {
   const name = document.getElementById('name').value.trim();
   if (!name) {
-    alert('Por favor, preencha seu nome antes de enviar.');
+    alert('Por favor, preencha seu nome antes de concluir.');
     return;
   }
 
-  let correctCount = 0;
-  const questionDivs = quizContainer.querySelectorAll('.question');
-
+  quizContainer.innerHTML = '';
   questions.forEach((q, index) => {
-    const selected = userAnswers[index];
-    const buttons = questionDivs[index].querySelectorAll('button');
+    const userAnswer = userAnswers[index];
+    const isCorrect = userAnswer === q.answer;
+    if (isCorrect) correctCount++;
 
-    buttons.forEach(btn => {
-      btn.disabled = true;
-      if (btn.innerText === q.answer) {
-        btn.classList.add('correct');
-      }
-      if (btn.innerText === selected && btn.innerText !== q.answer) {
-        btn.classList.add('incorrect');
-      }
-    });
-
-    if (selected === q.answer) {
-      correctCount++;
-    }
+    const div = document.createElement('div');
+    div.classList.add('question');
+    div.innerHTML = `
+      <p>${index + 1}. ${q.question}</p>
+      ${q.options.map(option => {
+        let cls = '';
+        if (option === q.answer) {
+          cls = 'correct';
+        } else if (option === userAnswer && option !== q.answer) {
+          cls = 'incorrect';
+        }
+        return `<button class="${cls}" disabled>${option}</button>`;
+      }).join('')}
+    `;
+    quizContainer.appendChild(div);
   });
 
   const percentage = (correctCount / questions.length) * 100;
@@ -941,14 +970,16 @@ submitButton.addEventListener('click', () => {
     </h3>
   `;
 
-  submitButton.style.display = 'none';
-  restartButton.style.display = 'block';
+  nextBtn.style.display = 'none';
+  submitBtn.style.display = 'none';
+  restartBtn.style.display = 'block';
 });
 
-restartButton.addEventListener('click', startQuiz);
+restartBtn.addEventListener('click', startQuiz);
 
 // Inicializar
 startQuiz();
 </script>
+
 </body>
 </html>
