@@ -13,8 +13,19 @@
       background-color: #f8f8f8;
       color: #333;
     }
-    h1, h2 {
+    h1 {
       text-align: center;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
     ul {
       list-style: none;
@@ -54,22 +65,34 @@
       background-color: #999;
       cursor: not-allowed;
     }
-    </style>
+    #submitBtn {
+      background-color: green;
+      color: white;
+    }
+    #prevBtn {
+      background-color: red;
+      color: white;
+    }
+  </style>
 </head>
 <body>
-    <h1>Preparação para prova ITIL </h1>
-    <form id="quizForm">
-        <label for="name">Coloque seu Nome</label>
-        <input type="text" id="name" name="name" required><br><br>
-        <div id="questionContainer"></div>
-        <div id="navigation">
-            <button type="button" id="prevBtn" class="hidden" onclick="prevQuestion()">Reiniciar</button>
-            <button type="button" id="nextBtn" onclick="nextQuestion()">Proximo</button>
-            <button type="submit" id="submitBtn" class="hidden">Concluir</button>
-        </div>
-    </form>
-    <div id="results"></div>
-    <script>
+  <h1>Simulado ITIL V4</h1>
+  <form id="quizForm">
+    <label for="name">Coloque seu Nome:</label>
+    <input type="text" id="name" name="name" required>
+
+    <div id="questionContainer"></div>
+
+    <div id="navigation">
+      <button type="button" id="prevBtn" onclick="restartQuiz()">Reiniciar</button>
+      <button type="button" id="nextBtn" onclick="nextQuestion()">Próximo</button>
+      <button type="submit" id="submitBtn" class="hidden">Concluir</button>
+    </div>
+  </form>
+
+  <div id="results"></div>
+
+  <script>
         // Perguntas e respostas
    const questions = [
     { 
