@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simulado ITIL V4</title>
   <style>
     body {
@@ -37,18 +37,14 @@
     .alternativa:hover {
       background-color: #d0d0d0;
     }
+    .selecionada {
+      background-color: #d0e7ff !important;
+    }
     .correta {
       background-color: #a5f7a5 !important;
     }
     .errada {
       background-color: #f7a5a5 !important;
-    }
-    .selecionada {
-      background-color: #d0e7ff !important;
-    }
-    .disabled {
-      pointer-events: none;
-      opacity: 0.6;
     }
     #nextBtn {
       background-color: #007bff;
@@ -58,21 +54,23 @@
       background-color: #999;
       cursor: not-allowed;
     }
-    #finalBtns {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    #finalBtns button {
-      flex: 1;
-    }
-  </style>
+    </style>
 </head>
 <body>
-  <h1>Simulado ITIL V4</h1>
-  <div id="app">Carregando perguntas...</div>
-
-  <script>
+    <h1>Preparação para prova ITIL </h1>
+    <form id="quizForm">
+        <label for="name">Coloque seu Nome</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <div id="questionContainer"></div>
+        <div id="navigation">
+            <button type="button" id="prevBtn" class="hidden" onclick="prevQuestion()">Reiniciar</button>
+            <button type="button" id="nextBtn" onclick="nextQuestion()">Proximo</button>
+            <button type="submit" id="submitBtn" class="hidden">Concluir</button>
+        </div>
+    </form>
+    <div id="results"></div>
+    <script>
+        // Perguntas e respostas
    const questions = [
     { 
         question: "Qual dos itens abaixo concede ao usuário acesso a um sistema?",
