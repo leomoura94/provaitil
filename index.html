@@ -863,7 +863,7 @@
     },
 
     ];
-
+let questions = [];
     let currentQuestion = 0;
     const userAnswers = [];
 
@@ -873,13 +873,23 @@
     const prevBtn = document.getElementById('prevBtn');
     const resultsContainer = document.getElementById('results');
 
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
     function renderQuestion() {
       const q = questions[currentQuestion];
+      const shuffledOptions = [...q.options];
+      shuffle(shuffledOptions);
+
       questionContainer.innerHTML = `
         <h2>Pergunta ${currentQuestion + 1} de ${questions.length}</h2>
         <p>${q.question}</p>
         <ul>
-          ${q.options.map(option => `
+          ${shuffledOptions.map(option => `
             <li>
               <button 
                 type="button" 
@@ -892,7 +902,6 @@
         </ul>
       `;
 
-      // Controle dos botões
       if (currentQuestion === questions.length - 1) {
         nextBtn.classList.add('hidden');
         submitBtn.classList.remove('hidden');
@@ -935,6 +944,8 @@
       currentQuestion = 0;
       userAnswers.length = 0;
       resultsContainer.innerHTML = '';
+      questions = JSON.parse(JSON.stringify(originalQuestions)); // Faz uma cópia
+      shuffle(questions);
       renderQuestion();
     }
 
@@ -963,9 +974,15 @@
 
       resultHTML += `</ul><h3>Acertos: ${correctCount} de ${questions.length}</h3>`;
       resultsContainer.innerHTML = resultHTML;
+
+      // 🔄 Após exibir resultados, reinicia e embaralha
+      setTimeout(() => {
+        restartQuiz();
+      }, 3000); // Espera 3 segundos antes de reiniciar (opcional)
     }
 
-    renderQuestion();
+    // Inicializa na primeira vez
+    restartQuiz();
   </script>
 </body>
 </html>
