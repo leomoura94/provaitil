@@ -48,14 +48,14 @@
     .alternativa:hover {
       background-color: #d0d0d0;
     }
-    .selecionada {
-      background-color: #d0e7ff !important;
-    }
     .correta {
       background-color: #a5f7a5 !important;
     }
     .errada {
       background-color: #f7a5a5 !important;
+    }
+    .selecionada {
+      background-color: #d0e7ff !important;
     }
     #nextBtn {
       background-color: #007bff;
@@ -128,7 +128,10 @@
         <ul>
           ${q.options.map(option => `
             <li>
-              <button type="button" class="alternativa ${userAnswers[currentQuestion] === option ? 'selecionada' : ''}" onclick="selectOption('${option}')">
+              <button 
+                type="button" 
+                class="alternativa" 
+                onclick="selectOption(this, '${option.replace(/'/g, "\\'")}')">
                 ${option}
               </button>
             </li>
@@ -146,9 +149,24 @@
       }
     }
 
-    function selectOption(option) {
+    function selectOption(button, option) {
+      const q = questions[currentQuestion];
       userAnswers[currentQuestion] = option;
-      renderQuestion();
+
+      const buttons = questionContainer.querySelectorAll('.alternativa');
+
+      buttons.forEach(btn => {
+        const btnText = btn.innerText;
+        btn.disabled = true;
+
+        if (btnText === q.answer) {
+          btn.classList.add('correta');
+        }
+
+        if (btnText === option && btnText !== q.answer) {
+          btn.classList.add('errada');
+        }
+      });
     }
 
     function nextQuestion() {
