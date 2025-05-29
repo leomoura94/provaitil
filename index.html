@@ -872,12 +872,13 @@
     const submitBtn = document.getElementById('submitBtn');
     const prevBtn = document.getElementById('prevBtn');
     const resultsContainer = document.getElementById('results');
-function shuffle(array) {
+     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
       }
     }
+
     function renderQuestion() {
       const q = questions[currentQuestion];
       questionContainer.innerHTML = `
@@ -897,7 +898,6 @@ function shuffle(array) {
         </ul>
       `;
 
-      // Controle dos botões
       if (currentQuestion === questions.length - 1) {
         nextBtn.classList.add('hidden');
         submitBtn.classList.remove('hidden');
@@ -940,6 +940,8 @@ function shuffle(array) {
       currentQuestion = 0;
       userAnswers.length = 0;
       resultsContainer.innerHTML = '';
+      questions = JSON.parse(JSON.stringify(originalQuestions)); // Faz uma cópia
+      shuffle(questions);
       renderQuestion();
     }
 
@@ -970,7 +972,8 @@ function shuffle(array) {
       resultsContainer.innerHTML = resultHTML;
     }
 
-    renderQuestion();
+    // Inicializa na primeira vez
+    restartQuiz();
   </script>
 </body>
 </html>
