@@ -54,9 +54,6 @@
     .errada {
       background-color: #f7a5a5 !important;
     }
-    .selecionada {
-      background-color: #d0e7ff !important;
-    }
     #nextBtn {
       background-color: #007bff;
       color: white;
@@ -72,6 +69,9 @@
     #prevBtn {
       background-color: red;
       color: white;
+    }
+    .hidden {
+      display: none;
     }
   </style>
 </head>
@@ -91,9 +91,9 @@
   </form>
 
   <div id="results"></div>
-
+  
   <script>
-    const questions = [
+    const originalQuestions = [
      { 
         question: "Qual dos itens abaixo concede ao usuário acesso a um sistema?",
         options: ["Requisição de serviço", "Acordo de serviço", "Consumo de serviço", "Provisão de serviço"],
@@ -865,7 +865,7 @@
     ];
 let questions = [];
     let currentQuestion = 0;
-    const userAnswers = [];
+    let userAnswers = [];
 
     const questionContainer = document.getElementById('questionContainer');
     const nextBtn = document.getElementById('nextBtn');
@@ -918,7 +918,7 @@ let questions = [];
       const buttons = questionContainer.querySelectorAll('.alternativa');
 
       buttons.forEach(btn => {
-        const btnText = btn.innerText;
+        const btnText = btn.innerText.trim();
         btn.disabled = true;
 
         if (btnText === q.answer) {
@@ -942,9 +942,9 @@ let questions = [];
 
     function restartQuiz() {
       currentQuestion = 0;
-      userAnswers.length = 0;
+      userAnswers = [];
       resultsContainer.innerHTML = '';
-      questions = JSON.parse(JSON.stringify(originalQuestions)); // Faz uma cópia
+      questions = JSON.parse(JSON.stringify(originalQuestions)); // Cria uma cópia das perguntas
       shuffle(questions);
       renderQuestion();
     }
@@ -975,10 +975,9 @@ let questions = [];
       resultHTML += `</ul><h3>Acertos: ${correctCount} de ${questions.length}</h3>`;
       resultsContainer.innerHTML = resultHTML;
 
-      // 🔄 Após exibir resultados, reinicia e embaralha
       setTimeout(() => {
         restartQuiz();
-      }, 3000); // Espera 3 segundos antes de reiniciar (opcional)
+      }, 3000);
     }
 
     // Inicializa na primeira vez
